@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tout la Clime | Confort Thermique Éco</title>
+    <!-- Tailwind CSS pour un rendu professionnel -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- CORRECTIF : déclaration des tailles personnalisées text-2xs/3xs/4xs/5xs et shadow-3xs -->
+    <!-- Sans ce bloc, Tailwind v4 ignore ces classes car elles n'existent pas par défaut -->
+    <style type="text/tailwindcss">
+        @theme {
+            --text-2xs: 0.7rem;
+            --text-3xs: 0.65rem;
+            --text-4xs: 0.6rem;
+            --text-5xs: 0.55rem;
+            --shadow-3xs: 0 1px 2px rgba(0,0,0,0.04);
+        }
+    </style>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .cart-drawer, .menu-drawer { transition: transform 0.3s ease-in-out; }
+        .product-card:hover img { transform: scale(1.03); }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee-cards {
+            display: flex;
+            width: max-content;
+            animation: marquee 35s linear infinite;
+        }
+        .animate-marquee-cards:hover { animation-play-state: paused; }
+        details summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased text-sm relative">
+
+    <!-- CONTENEUR DES NOTIFICATIONS (TOASTS) -->
+    <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- BULLE DE PANIER FLOTTANTE (SUIT LE DÉFILEMENT) -->
+    <button onclick="toggleCart(true)" class="fixed bottom-6 right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white w-12 h-12 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 cursor-pointer group">
+        <i class="fa-solid fa-bag-shopping text-base group-hover:rotate-12 transition-transform"></i>
+        <span id="floating-cart-count" class="absolute -top-1 -right-1 inline-flex items-center justify-center min-w-5 h-5 px-1 py-0.5 text-5xs font-black leading-none text-white bg-slate-950 rounded-full border border-white">0</span>
+    </button>
+
+    <!-- EN-TÊTE ET MENU PRINCIPAL -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur shadow-xs border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+
+            <button onclick="toggleMenu(true)" class="md:hidden text-slate-600 hover:text-emerald-600 p-1 cursor-pointer">
+                <i class="fa-solid fa-bars text-base"></i>
+            </button>
+
+            <a href="#" onclick="navigateTo('accueil')" class="flex items-center space-x-2 group">
+                <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shadow-3xs group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200">
+                    <i class="fa-solid fa-wind text-xs"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold tracking-wider text-slate-900 uppercase">Tout La Clime</span>
+                    <span class="text-5xs font-semibold tracking-widest text-slate-400 uppercase -mt-0.5">France & EU</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex space-x-6 font-semibold text-xs tracking-wide uppercase text-slate-600 items-center">
+                <a href="#" onclick="navigateTo('accueil')" class="hover:text-emerald-600 transition">Accueil</a>
+                <a href="#" onclick="navigateTo('catalogue')" class="hover:text-emerald-600 transition">Catalogue</a>
+
+                <a href="#" onclick="navigateTo('demande')" class="hover:text-emerald-600 transition text-emerald-600 flex items-center gap-1.5 relative">
+                    Demande Nouveauté
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                    </span>
+                </a>
+
+                <a href="#" onclick="navigateTo('catalogue', 'promo')" class="text-red-500 hover:text-red-600 transition flex items-center gap-1"><i class="fa-solid fa-fire text-3xs"></i> Destockage</a>
+                <a href="#" onclick="navigateTo('propos')" class="hover:text-emerald-600 transition">L'Usine</a>
+                <a href="#" onclick="navigateTo('contact')" class="hover:text-emerald-600 transition">Contact</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <div id="geo-badge" class="inline-flex items-center gap-1 bg-slate-100 px-2 py-0.5 rounded-md text-4xs font-bold uppercase tracking-wider text-slate-500 border border-slate-200/40">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> <span id="geo-text">FR (EUR)</span>
+                </div>
+                <button onclick="navigateTo('catalogue')" class="text-slate-600 hover:text-emerald-600 p-1 cursor-pointer">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </button>
+                <button onclick="toggleCart(true)" class="relative text-slate-600 hover:text-emerald-600 p-1 cursor-pointer">
+                    <i class="fa-solid fa-bag-shopping text-sm"></i>
+                    <span id="cart-count" class="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center px-1.5 py-0.5 text-4xs font-bold leading-none text-white bg-emerald-600 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- VOLET DU MENU MOBILE -->
+    <div id="menu-overlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/50 z-50 hidden backdrop-blur-xs"></div>
+    <div id="menu-drawer" class="fixed top-0 left-0 h-full w-64 bg-white z-50 shadow-2xl -translate-x-full menu-drawer flex flex-col">
+        <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Navigation</span>
+            <button onclick="toggleMenu(false)" class="p-1 text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
+        </div>
+        <nav class="flex flex-col p-4 space-y-3 text-xs font-semibold uppercase tracking-wider text-slate-700">
+            <a href="#" onclick="navigateTo('accueil'); toggleMenu(false);" class="py-2 px-3 hover:bg-slate-50 rounded-xl hover:text-emerald-600 transition">Accueil</a>
+            <a href="#" onclick="navigateTo('catalogue'); toggleMenu(false);" class="py-2 px-3 hover:bg-slate-50 rounded-xl hover:text-emerald-600 transition">Catalogue Complet</a>
+            <a href="#" onclick="navigateTo('demande'); toggleMenu(false);" class="py-2 px-3 hover:bg-slate-50 rounded-xl text-emerald-600 transition flex items-center justify-between">
+                Demande Nouveauté
+                <span class="bg-red-500 text-white text-5xs px-1.5 py-0.5 rounded-full font-black animate-pulse">!</span>
+            </a>
+            <a href="#" onclick="navigateTo('catalogue', 'promo'); toggleMenu(false);" class="py-2 px-3 bg-red-50 text-red-600 rounded-xl transition flex items-center gap-1"><i class="fa-solid fa-fire text-3xs"></i> Destockage</a>
+            <a href="#" onclick="navigateTo('propos'); toggleMenu(false);" class="py-2 px-3 hover:bg-slate-50 rounded-xl hover:text-emerald-600 transition">L'Usine</a>
+            <a href="#" onclick="navigateTo('contact'); toggleMenu(false);" class="py-2 px-3 hover:bg-slate-50 rounded-xl hover:text-emerald-600 transition">Contact Support</a>
+        </nav>
+    </div>
+
+    <!-- CONTENT ROUTER -->
+    <main id="main-content">
+
+        <!-- PAGE 1 : ACCUEIL -->
+        <section id="page-accueil" class="page-section">
+            <div class="relative bg-slate-950 text-white overflow-hidden py-20 sm:py-24 min-h-[400px] lg:min-h-[480px] flex items-center">
+                <div class="absolute inset-0 opacity-40">
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1920&q=80" alt="Centrale thermique" class="w-full h-full object-cover">
+                </div>
+                <div class="relative max-w-7xl mx-auto px-4 text-center lg:text-left w-full z-10">
+                    <span class="inline-flex items-center gap-1.5 py-0.5 px-2.5 rounded-md text-4xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 mb-3">Direct Fabricant</span>
+                    <h1 class="text-2xl font-extrabold tracking-tight sm:text-3xl max-w-2xl leading-tight text-white">Le confort thermique accessible sans intermédiaire.</h1>
+                    <p class="mt-2 text-xs text-slate-300 max-w-xl">Découvrez nos arrivages massifs de climatiseurs certifiés et de solutions canicule à prix d'usine, à partir de 199€ seulement.</p>
+                    <div class="mt-5 flex flex-wrap justify-center lg:justify-start gap-3">
+                        <button onclick="navigateTo('catalogue')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 font-bold rounded-xl shadow-md transition cursor-pointer text-4xs uppercase tracking-widest">Ouvrir le Catalogue</button>
+
+                        <button onclick="navigateTo('demande')" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 border border-red-500/80 font-bold rounded-xl shadow-md transition cursor-pointer text-4xs uppercase tracking-widest text-white flex items-center gap-2 relative overflow-hidden group">
+                            <span class="absolute inset-0 bg-red-600/10 opacity-50 pointer-events-none animate-pulse"></span>
+                            <span class="w-2 h-2 rounded-full bg-red-500 inline-block animate-ping"></span>
+                            Voir les nouveautés
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOCS CARACTÉRISTIQUES -->
+            <div class="max-w-7xl mx-auto px-4 mt-4">
+                <div class="bg-white border border-slate-200 rounded-xl p-3 grid grid-cols-1 md:grid-cols-3 gap-3 shadow-3xs">
+                    <div class="flex items-center space-x-2.5 p-1">
+                        <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0"><i class="fa-solid fa-truck-fast text-base"></i></div>
+                        <div><h3 class="font-bold text-slate-900 text-xs">Expédition Assurée</h3><p class="text-4xs text-slate-400">Suivi complet de votre colis sous 24/48h.</p></div>
+                    </div>
+                    <div class="flex items-center space-x-2.5 p-1 border-t md:border-t-0 md:border-x border-slate-100 md:px-3">
+                        <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0"><i class="fa-solid fa-shield-halved text-base"></i></div>
+                        <div><h3 class="font-bold text-slate-900 text-xs">Garantie Intégrale 5 Ans</h3><p class="text-4xs text-slate-400">Prise en charge totale pièces et compresseur.</p></div>
+                    </div>
+                    <div class="flex items-center space-x-2.5 p-1 border-t md:border-t-0 pt-2 md:pt-1">
+                        <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0"><i class="fa-solid fa-cubes text-base"></i></div>
+                        <div><h3 class="font-bold text-slate-900 text-xs">Matériel Certifié CE</h3><p class="text-4xs text-slate-400">Fluides écologiques à haut rendement.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRILLE DE PRODUITS -->
+            <div class="max-w-7xl mx-auto px-4 py-6">
+                <div class="flex items-center justify-end mb-3">
+                    <button onclick="navigateTo('catalogue')" class="text-4xs font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer">Voir tout le stock <i class="fa-solid fa-arrow-right text-4xs"></i></button>
+                </div>
+                <div id="homepage-featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- PAGE : FORMULAIRE DEMANDE DE NOUVEAUTÉ -->
+        <section id="page-demande" class="page-section hidden max-w-xl mx-auto px-4 py-8">
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-3xs">
+                <div class="text-center mb-4">
+                    <div class="w-9 h-9 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-2 animate-bounce">
+                        <i class="fa-solid fa-bell text-xs"></i>
+                    </div>
+                    <h1 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Demande de Nouveauté / Matériel Spécifique</h1>
+                    <p class="text-slate-400 text-4xs mt-0.5">Remplissez vos informations. Le bouton ouvrira votre client mail pour envoyer la demande manuellement.</p>
+                </div>
+
+                <form onsubmit="sendNouveauteMail(event)" class="space-y-3 text-4xs">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-bold uppercase text-slate-400 mb-0.5">Nom complet *</label>
+                            <input type="text" id="nov-name" required class="w-full p-2 border border-slate-200 rounded-lg text-xs" placeholder="Ex: Jean Dupont">
+                        </div>
+                        <div>
+                            <label class="block font-bold uppercase text-slate-400 mb-0.5">Adresse Email *</label>
+                            <input type="email" id="nov-email" required class="w-full p-2 border border-slate-200 rounded-lg text-xs" placeholder="Ex: jean@mail.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold uppercase text-slate-400 mb-0.5">Téléphone (Optionnel)</label>
+                        <input type="tel" id="nov-phone" class="w-full p-2 border border-slate-200 rounded-lg text-xs" placeholder="Ex: 0600000000">
+                    </div>
+                    <div>
+                        <label class="block font-bold uppercase text-slate-400 mb-0.5">Détails du matériel ou de la nouveauté recherchée *</label>
+                        <textarea id="nov-details" required rows="4" class="w-full p-2 border border-slate-200 rounded-lg text-xs" placeholder="Décrivez la puissance, la marque ou le modèle de climatiseur que vous souhaitez commander..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-2.5 bg-slate-950 hover:bg-emerald-600 text-white font-bold rounded-lg uppercase tracking-widest text-4xs transition cursor-pointer flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope"></i> Ouvrir mon mail pour envoyer
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- PAGE : CATALOGUE SÉPARÉ -->
+        <section id="page-catalogue" class="page-section hidden max-w-7xl mx-auto px-4 py-6">
+            <div class="bg-slate-900 rounded-xl p-4 text-white mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                    <h1 class="text-base font-bold tracking-wide uppercase">Le Catalogue Intégral</h1>
+                </div>
+                <div>
+                    <select id="catalogue-filter" onchange="applyCatalogueFilter()" class="p-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white cursor-pointer focus:outline-hidden">
+                        <option value="all">Tous nos produits</option>
+                        <option value="clim">Climatiseurs </option>
+                        <option value="canicule">Accessoires Anti-Canicule </option>
+                        <option value="promo">Équipements en Promotion</option>
+                    </select>
+                </div>
+            </div>
+            <div id="full-catalogue-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+        </section>
+
+        <!-- PAGE : VALIDATION DE COMMANDE & FACTURATION -->
+        <section id="page-checkout" class="page-section hidden max-w-5xl mx-auto px-4 py-6">
+            <h1 class="text-lg font-bold text-slate-900 mb-4">Validation de votre commande</h1>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <form id="checkout-form" onsubmit="processOrderAndInvoice(event)" class="lg:col-span-7 bg-white p-4 rounded-xl shadow-3xs border border-slate-200/60 space-y-3">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 pb-1.5 border-b border-slate-100">Détails de livraison</h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Nom complet *</label>
+                            <input type="text" required id="form-name" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Téléphone *</label>
+                            <input type="tel" required id="form-phone" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Adresse de livraison *</label>
+                        <input type="text" required id="form-address" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Ville *</label>
+                            <input type="text" required id="form-city" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Code Postal *</label>
+                            <input type="text" required id="form-zip" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Pays *</label>
+                            <input type="text" required id="form-country" value="France" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="block text-4xs font-bold uppercase text-slate-400 mb-1">Méthode de paiement *</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="border border-slate-200 rounded-lg p-2.5 flex items-center gap-2 cursor-pointer bg-slate-50">
+                                <input type="radio" name="payment_method" value="standard" checked onchange="togglePaymentType('standard')">
+                                <span class="text-3xs font-bold uppercase text-slate-700">Carte / Virement</span>
+                            </label>
+                            <label class="border border-slate-200 rounded-lg p-2.5 flex items-center gap-2 cursor-pointer bg-slate-50">
+                                <input type="radio" name="payment_method" value="crypto" onchange="togglePaymentType('crypto')">
+                                <span class="text-3xs font-bold uppercase text-amber-600 flex items-center gap-1"><i class="fa-brands fa-bitcoin text-2xs"></i> Crypto-monnaies</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="crypto-payment-area" class="hidden border border-amber-200 bg-amber-50/40 p-3 rounded-xl space-y-3">
+                        <div>
+                            <label class="block text-4xs font-bold uppercase text-amber-800 mb-0.5">Sélectionnez votre crypto *</label>
+                            <select id="crypto-select" onchange="updateCryptoDetails()" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold">
+    <option value="TRON">Tron (TRC-20)</option>
+    <option value="BTC">Bitcoin (BTC)</option>
+    <option value="SOL">Solana (SOL)</option>
+    <option value="BNB">Binance Smart Chain (BNB)</option>
+    <option value="ETH">Ethereum (ETH)</option>
+</select>
+                        </div>
+                        <div class="bg-white p-2.5 rounded-lg border border-amber-100 space-y-2 text-4xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400 uppercase font-semibold">Montant exact à envoyer :</span>
+                                <span id="crypto-amount" class="text-xs font-black text-slate-900 bg-amber-100 px-2 py-0.5 rounded">0.00 USDT</span>
+                            </div>
+                            <div class="break-all">
+                                <span class="text-slate-400 uppercase font-semibold block mb-0.5">Adresse de dépôt officielle :</span>
+                                <code id="crypto-address" class="block bg-slate-50 border border-slate-100 p-1.5 rounded font-mono text-slate-700 text-3xs font-bold select-all">TMockAddressTRC20NetworkUSDTxxxxxx</code>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-4xs font-bold uppercase text-amber-800 mb-0.5">Coller le Hash de Transaction (TXID) *</label>
+                            <input type="text" id="form-crypto-hash" placeholder="Entrez le TXID de votre transaction" class="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-mono">
+                        </div>
+                        <p class="text-5xs text-amber-700 leading-relaxed">Votre commande sera confirmée manuellement dès réception du paiement sur la blockchain (délai habituel : quelques minutes à quelques heures selon le réseau).</p>
+                    </div>
+
+                    <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-4xs uppercase tracking-widest cursor-pointer">
+                        Valider ma commande
+                    </button>
+                </form>
+
+                <div class="lg:col-span-5">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200/60">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3">Résumé de l'achat</h2>
+                        <div id="checkout-summary-items" class="divide-y divide-slate-100 max-h-48 overflow-y-auto"></div>
+                        <div class="mt-3 pt-3 border-t border-slate-100 text-4xs uppercase tracking-wide font-semibold space-y-1">
+                            <div class="flex justify-between text-slate-400"><span>Sous-total</span><span id="checkout-subtotal" class="font-bold text-slate-700">0.00 €</span></div>
+                            <div class="flex justify-between text-slate-400"><span>Envoi logistique</span><span class="text-emerald-600 font-bold">Gratuit</span></div>
+                            <div class="flex justify-between text-xs font-bold text-slate-900 pt-2 border-t border-slate-100"><span>Total TTC</span><span id="checkout-total">0.00 €</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANIER DÉROULANT -->
+        <div id="cart-overlay" onclick="toggleCart(false)" class="fixed inset-0 bg-black/50 z-50 hidden backdrop-blur-xs"></div>
+        <div id="cart-drawer" class="fixed top-0 right-0 h-full w-80 bg-white z-50 shadow-2xl translate-x-full cart-drawer flex flex-col justify-between">
+            <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Votre Sélection</span>
+                <button onclick="toggleCart(false)" class="p-1 text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
+            </div>
+            <div id="cart-items" class="p-4 flex-1 overflow-y-auto divide-y divide-slate-100"></div>
+            <div class="p-4 border-t border-slate-100 bg-slate-50 text-4xs uppercase tracking-wide font-semibold space-y-3">
+                <div class="flex justify-between text-slate-400"><span>Total Provisoire</span><span id="cart-subtotal" class="font-bold text-slate-900">0.00 €</span></div>
+                <button onclick="navigateToCheckout()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition tracking-widest text-center cursor-pointer">Passer au paiement</button>
+            </div>
+        </div>
+
+        <!-- MODAL DÉTAIL PRODUIT -->
+        <div id="product-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs" onclick="if(event.target === this) closeProductModal()">
+            <div class="bg-white rounded-xl max-w-xl w-full p-4 relative grid grid-cols-1 sm:grid-cols-2 gap-4 shadow-2xl">
+                <button onclick="closeProductModal()" class="absolute top-2 right-2 p-1 text-slate-400 hover:text-slate-600 cursor-pointer z-10"><i class="fa-solid fa-xmark text-sm"></i></button>
+                <div id="modal-content" class="contents"></div>
+            </div>
+        </div>
+
+        <!-- MODAL FACTURE -->
+        <div id="invoice-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+            <div class="bg-white rounded-xl max-w-sm w-full p-5 text-center shadow-2xl">
+                <div id="invoice-icon-wrap" class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-lg">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 id="invoice-title" class="text-sm font-bold text-slate-900 mb-1">Commande enregistrée !</h3>
+                <p id="invoice-subtext" class="text-slate-400 text-3xs mb-4">Votre commande a bien été enregistrée. Vous pouvez télécharger votre récapitulatif.</p>
+                <div class="space-y-2">
+                    <button id="download-invoice-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-4xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-file-arrow-down"></i> Télécharger le récapitulatif
+                    </button>
+                    <button onclick="closeInvoiceModalAndReset()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-4xs uppercase tracking-wider cursor-pointer">
+                        Retourner à la boutique
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- USINE & CONTACT -->
+        <section id="page-propos" class="page-section hidden max-w-3xl mx-auto px-4 py-8 text-center">
+            <h1 class="text-base font-bold text-slate-900 mb-2">Notre Réseau Régulé</h1>
+            <p class="text-slate-500 text-3xs mb-4">Direct usine pour éliminer les coûts intermédiaires.</p>
+            <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=600&q=80" alt="Usine" class="rounded-xl max-w-xs mx-auto shadow-3xs">
+        </section>
+
+        <section id="page-contact" class="page-section hidden max-w-xl mx-auto px-4 py-6 bg-white border border-slate-200 rounded-xl my-4 text-center">
+            <h1 class="text-sm font-bold text-slate-900 mb-2">Support technique & logistique</h1>
+            <p class="text-slate-500 text-xs">Réponse sous 24h : <b class="text-emerald-600">laclime.service@hotmail.com</b></p>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 pt-10 pb-6 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4">
+
+            <div class="mb-8 bg-emerald-950/40 border border-emerald-900/60 rounded-xl p-3.5 text-center">
+                <p class="text-3xs font-bold uppercase tracking-widest text-emerald-400 flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-bolt text-amber-400"></i> Offre exclusive : Livraison gratuite partout en Europe et en France métropolitaine ce mois-ci !
+                </p>
+            </div>
+
+            <div class="mb-8 border border-slate-800 rounded-xl overflow-hidden bg-slate-900/30">
+                <details class="group">
+                    <summary class="p-4 font-bold text-3xs uppercase tracking-widest text-slate-200 bg-slate-900/70 hover:bg-slate-900 flex items-center justify-between cursor-pointer list-none">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-file-shield text-emerald-500"></i>
+                            Informations qualité et fluides
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-4xs transition-transform group-open:rotate-180 text-slate-500"></i>
+                    </summary>
+                    <div class="p-4 border-t border-slate-800 space-y-4 text-4xs leading-relaxed text-slate-400">
+                        <div class="border-l-2 border-emerald-500 pl-3">
+                            <h4 class="font-bold text-slate-300 uppercase mb-0.5">Performance énergétique</h4>
+                            <p>Les classes énergétiques indiquées correspondent aux données fournisseurs pour chaque modèle.</p>
+                        </div>
+                        <div class="border-l-2 border-emerald-500 pl-3">
+                            <h4 class="font-bold text-slate-300 uppercase mb-0.5">Niveau sonore</h4>
+                            <p>Les niveaux en décibels affichés proviennent des fiches techniques constructeur.</p>
+                        </div>
+                        <div class="border-l-2 border-emerald-500 pl-3">
+                            <h4 class="font-bold text-slate-300 uppercase mb-0.5">Fluides réfrigérants</h4>
+                            <p>Nos appareils utilisent des fluides à faible impact environnemental (R32, R290 selon modèle).</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-4xs uppercase tracking-wider mb-8 pb-8 border-b border-slate-900">
+
+                <div>
+                    <h3 class="font-black text-slate-200 tracking-widest text-3xs mb-3 pb-1 border-b border-slate-900">Nos Catégories</h3>
+                    <ul class="space-y-2 font-medium text-slate-400">
+                        <li><a href="#" onclick="navigateTo('catalogue', 'clim')" class="hover:text-emerald-400 transition">Climatiseurs Mobiles</a></li>
+                        <li><a href="#" onclick="navigateTo('catalogue', 'clim')" class="hover:text-emerald-400 transition">Climatiseurs Splits Fixes</a></li>
+                        <li><a href="#" onclick="navigateTo('catalogue', 'canicule')" class="hover:text-emerald-400 transition">Ventilateurs Colonne Premium</a></li>
+                        <li><a href="#" onclick="navigateTo('catalogue', 'canicule')" class="hover:text-emerald-400 transition">Rafraîchisseurs & Isolants</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-black text-slate-200 tracking-widest text-3xs mb-3 pb-1 border-b border-slate-900">Garanties & Infos</h3>
+                    <ul class="space-y-2 font-medium text-slate-400">
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600 text-5xs"></i> Garantie 2 ans constructeur incluse</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-arrow-rotate-left text-slate-600 text-5xs"></i> Retours sous 14 jours d'usine</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-truck text-emerald-600 text-5xs"></i> Livraison Gratuite (FR & Europe)</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-envelope-open text-slate-600 text-5xs"></i> Suivi par courriel sous 24h</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-black text-slate-200 tracking-widest text-3xs mb-3 pb-1 border-b border-slate-900">Support Client</h3>
+                    <ul class="space-y-2 font-medium text-slate-400">
+                        <li class="flex items-center gap-1.5 text-emerald-400"><i class="fa-brands fa-whatsapp text-xs"></i> Assistance 7j/7 via WhatsApp</li>
+                        <li class="lowercase text-slate-400 font-bold select-all tracking-normal">Email : laclime.service@hotmail.com</li>
+                        <li class="text-slate-500 font-bold">Délai moyen : Moins de 2h</li>
+                        <li class="text-slate-500">Traitement des litiges directs d'usine</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-black text-slate-200 tracking-widest text-3xs mb-3 pb-1 border-b border-slate-900">Paiement</h3>
+                    <p class="text-slate-500 normal-case font-medium leading-relaxed">
+                        Commandes confirmées manuellement après réception du paiement.
+                    </p>
+                    <div class="mt-2.5 flex gap-2 text-slate-700 text-xs">
+                        <i class="fa-brands fa-cc-visa"></i>
+                        <i class="fa-brands fa-cc-mastercard"></i>
+                        <i class="fa-brands fa-bitcoin"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-5xs uppercase tracking-widest text-slate-600 text-center md:text-left">
+                <div class="flex flex-col gap-0.5">
+                    <span class="font-bold text-slate-500">Tout la Clime © 2026</span>
+                    <span class="normal-case tracking-normal max-w-xl text-slate-600">Boutique de déstockage. Les dénominations commerciales et photos d'illustration sont la propriété exclusive de leurs marques respectives.</span>
+                </div>
+                <div class="shrink-0 text-slate-500 font-bold">
+                    France & EU Direct Depot.
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- LOGIQUE JAVASCRIPT -->
+    <script>
+const products = [
+    { id: 1, name: "Climatiseur Mobile Éco Compact 2.0kW", brand: "Tout la Clime Eco", power: "2.0kW", price: 249, promoPrice: 199, category: "clim", image: "images1.jpg", desc: "Climatiseur portatif idéal pour petites pièces jusqu'à 20m².", specs: ["Classe: A", "7000 BTU", "Fluide: R290 Éco"] },
+    { id: 2, name: "Daikin Sensira Split Mural Performant", brand: "Daikin", power: "2.5kW", price: 649, promoPrice: 579, category: "clim", image: "images2.jpg", desc: "Moteur Inverter ultra-économique.", specs: ["Classe: A++", "21 dB", "Inverter: Oui"] },
+    { id: 3, name: "Mitsubishi Electric Design Compact", brand: "Mitsubishi", power: "3.5kW", price: 899, promoPrice: 799, category: "clim", image: "images3.jpg", desc: "Finition blanche mate de type premium.", specs: ["Classe: A+++", "Purificateur intégré"] },
+    { id: 4, name: "Climatiseur Mobile Premium Silent Pro", brand: "Carrier", power: "2.6kW", price: 349, promoPrice: 299, category: "clim", image: "images4.jpg", desc: "Solution mobile robuste avec kit inclus.", specs: ["Classe: A+", "Télécommande"] },
+    { id: 5, name: "Système Split Fixe Air-Concept Éco", brand: "Panasonic", power: "2.5kW", price: 450, promoPrice: 389, category: "clim", image: "images5.jpg", desc: "Climatiseur fixe réversible (chaud/froid).", specs: ["Classe: A++", "Gaz: R32"] },
+    { id: 6, name: "Climatiseur Fenêtre US-Style Intégrable", brand: "Carrier", power: "3.2kW", price: 499, promoPrice: null, category: "clim", image: "images6.jpg", desc: "S'intègre dans une ouverture de cloison.", specs: ["Classe: A", "Châssis robuste"] },
+    { id: 7, name: "Console Basse Double Flux Confort", brand: "Daikin", power: "3.5kW", price: 1199, promoPrice: 999, category: "clim", image: "images7.jpg", desc: "Se pose au sol ou en bas de mur.", specs: ["Classe: A++", "Double Flux"] },
+    { id: 8, name: "Climatiseur Mobile Grand Espace 4.1kW", brand: "Tout la Clime Heavy", power: "4.1kW", price: 549, promoPrice: 479, category: "clim", image: "images8.jpg", desc: "Idéal pour grands volumes jusqu'à 50m².", specs: ["3 vitesses", "Débit max: 450 m³/h"] },
+    { id: 9, name: "Monobloc Mural Sans Groupe Externe", brand: "Panasonic", power: "2.3kW", price: 929, promoPrice: null, category: "clim", image: "images9.jpg", desc: "Idéal pour les façades classées.", specs: ["Pas d'unité externe", "Design slim"] },
+    { id: 10, name: "Split Mural Panasonic Inverter Élite", brand: "Panasonic", power: "5.0kW", price: 1450, promoPrice: 1290, category: "clim", image: "images10.jpg", desc: "Une puissance hors norme.", specs: ["Classe: A++", "WiFi intégré"] },
+    { id: 11, name: "Ventilateur colonne sans pales Premium", brand: "Air-Confort", power: "60W", price: 169, promoPrice: 149, category: "canicule", image: "images11.jpg", desc: "Flux d'air continu et mode nuit silencieux.", specs: ["35 dB", "Oscillation 90°"] },
+    { id: 12, name: "Rafraîchisseur d'air évaporatif Mobile", brand: "HydroAir", power: "80W", price: 119, promoPrice: 89, category: "canicule", image: "images12.jpg", desc: "Rafraîchit et humidifie avec efficacité.", specs: ["Réservoir: 6L", "Glace incluse"] },
+    { id: 13, name: "Rideaux occultants & thermiques Protection", brand: "ThermoShield", power: "Isolant", price: 49, promoPrice: 39, category: "canicule", image: "images13.jpg", desc: "Baisse de 3-5°C sans électricité.", specs: ["140x260cm", "Aluminisé"] },
+    { id: 14, name: "Ventilateur de plafond avec minuterie", brand: "AeroSleep", power: "45W", price: 159, promoPrice: 129, category: "canicule", image: "images14.jpg", desc: "Mode nuit silencieux optimal.", specs: ["6 vitesses", "Éclairage LED"] },
+    { id: 15, name: "Ventilateur brumisateur portable USB", brand: "PocketBreeze", power: "Batterie", price: 25, promoPrice: 19, category: "canicule", image: "images15.jpg", desc: "Achat d'impulsion idéal.", specs: ["Autonomie: 6h", "Recharge USB-C"] }
+];
+
+let cart = [];
+let generatedInvoiceData = null;
+
+const cryptoAddresses = {
+    TRON: "TMockAddressTRC20NetworkUSDTxxxxxx", // Remplace par ta vraie adresse TRON
+    BTC: "bc1qvxgcqvtgsxehr5gqadczs8k8xjn4q08xlttvej",
+    SOL: "8dbpk8U5DwATDZwMnCt9dJktvXTmtjDXSeoMusrbGSnZ",
+    BNB: "0x54184068aA1682Af58C20Ccab63a50D0803B5C6e",
+    ETH: "0x54184068aA1682Af58C20Ccab63a50D0803B5C6e"
+};
+
+const cryptoRates = {
+    BTC: 62000,
+    ETH: 3100,
+    SOL: 140,
+    BNB: 580,
+    TRON: 1
+};
+
+function navigateTo(pageId, filterOpt = 'all') {
+    document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+    document.getElementById(`page-${pageId}`).classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (pageId === 'catalogue') {
+        document.getElementById('catalogue-filter').value = filterOpt;
+        applyCatalogueFilter();
+    }
+}
+
+function toggleMenu(open) {
+    const drawer = document.getElementById('menu-drawer');
+    const overlay = document.getElementById('menu-overlay');
+    if (open) {
+        drawer.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    } else {
+        drawer.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+}
+
+function sendNouveauteMail(e) {
+    e.preventDefault();
+    const name = document.getElementById('nov-name').value;
+    const email = document.getElementById('nov-email').value;
+    const phone = document.getElementById('nov-phone').value || "Non spécifié";
+    const details = document.getElementById('nov-details').value;
+    const recipient = "laclime.service@hotmail.com";
+    const subject = encodeURIComponent("Demande de Nouveauté / Matériel Spécifique - Tout La Clime");
+    const body = encodeURIComponent(
+        "Bonjour l'équipe Tout La Clime,\n\n" +
+        "Nom : " + name + "\n" +
+        "Email : " + email + "\n" +
+        "Téléphone : " + phone + "\n\n" +
+        "Matériel recherché :\n\n" +
+        details +
+        "\n\nMerci."
+    );
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    triggerNotification("Ouverture de votre application de messagerie...");
+}
+
+function togglePaymentType(type) {
+    const cryptoBox = document.getElementById('crypto-payment-area');
+    const hashInput = document.getElementById('form-crypto-hash');
+    if (type === "crypto") {
+        cryptoBox.classList.remove("hidden");
+        hashInput.setAttribute("required", "true");
+        updateCryptoDetails();
+    } else {
+        cryptoBox.classList.add("hidden");
+        hashInput.removeAttribute("required");
+    }
+}
+
+function updateCryptoDetails() {
+    const totalEUR = cart.reduce(
+        (acc, item) => acc + (item.product.promoPrice || item.product.price) * item.quantity,
+        0
+    );
+    const crypto = document.getElementById("crypto-select").value;
+    let amount = "";
+    switch (crypto) {
+        case "TRON": amount = totalEUR.toFixed(2) + " USDT"; break;
+        case "BTC": amount = (totalEUR / cryptoRates.BTC).toFixed(6) + " BTC"; break;
+        case "SOL": amount = (totalEUR / cryptoRates.SOL).toFixed(4) + " SOL"; break;
+        case "BNB": amount = (totalEUR / cryptoRates.BNB).toFixed(4) + " BNB"; break;
+        case "ETH": amount = (totalEUR / cryptoRates.ETH).toFixed(5) + " ETH"; break;
+    }
+    document.getElementById("crypto-amount").textContent = amount;
+    document.getElementById("crypto-address").textContent = cryptoAddresses[crypto];
+}
+
+function renderGrids() {
+    const homeGrid = document.getElementById('homepage-featured-grid');
+    homeGrid.innerHTML = '';
+    renderToContainer([products[0], products[10], products[11], products[12]], homeGrid);
+    applyCatalogueFilter();
+}
+
+function renderToContainer(items, container) {
+    items.forEach(p => {
+        const price = p.promoPrice ? p.promoPrice : p.price;
+        const promoBadge = p.promoPrice
+            ? `<span class="absolute top-2 left-2 bg-red-600 text-white font-bold text-5xs px-1.5 py-0.5 rounded-sm uppercase z-10">Promo</span>`
+            : '';
+        const priceHTML = p.promoPrice
+            ? `<span class="text-xs font-bold text-red-600">${p.promoPrice} €</span>
+               <span class="text-4xs line-through text-slate-400 ml-1.5">${p.price} €</span>`
+            : `<span class="text-xs font-bold text-slate-900">${p.price} €</span>`;
+
+        container.innerHTML += `
+            <div class="product-card bg-white rounded-xl overflow-hidden border border-slate-200/60 shadow-3xs relative flex flex-col h-full text-4xs">
+                ${promoBadge}
+                <div class="relative overflow-hidden bg-slate-100 aspect-video cursor-pointer" onclick="openProductModal(${p.id})">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-300"
+                         onerror="this.onerror=null;this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Photo+indisponible';">
+                </div>
+                <div class="p-2.5 flex flex-col flex-1 justify-between gap-1.5">
+                    <div>
+                        <div class="flex items-center justify-between font-bold text-slate-400 uppercase tracking-widest mb-0.5">
+                            <span>${p.brand}</span>
+                            <span class="bg-slate-100 px-1 py-0.2 rounded-sm text-slate-500">${p.power}</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-3xs line-clamp-1 hover:text-emerald-600 cursor-pointer" onclick="openProductModal(${p.id})">
+                            ${p.name}
+                        </h3>
+                    </div>
+                    <div>
+                        <div class="mb-1.5">${priceHTML}</div>
+                        <button onclick="addToCart(${p.id})" class="w-full py-1.5 bg-slate-950 hover:bg-emerald-600 text-white font-bold rounded-md transition cursor-pointer uppercase tracking-wider">
+                            Ajouter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function applyCatalogueFilter() {
+    const val = document.getElementById('catalogue-filter').value;
+    const container = document.getElementById('full-catalogue-grid');
+    container.innerHTML = '';
+    let filtered = products;
+    if (val === 'clim') filtered = products.filter(p => p.category === 'clim');
+    if (val === 'canicule') filtered = products.filter(p => p.category === 'canicule');
+    if (val === 'promo') filtered = products.filter(p => p.promoPrice !== null);
+    renderToContainer(filtered, container);
+}
+
+function openProductModal(id) {
+    const p = products.find(prod => prod.id === id);
+    const price = p.promoPrice ? p.promoPrice : p.price;
+    let list = p.specs.map(s =>
+        `<li class="flex items-center gap-1 text-4xs text-slate-500">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            ${s}
+        </li>`
+    ).join('');
+
+    document.getElementById('modal-content').innerHTML = `
+        <div class="rounded-lg overflow-hidden bg-slate-100 aspect-square">
+            <img src="${p.image}" class="w-full h-full object-cover"
+                 onerror="this.onerror=null;this.src='https://placehold.co/400x400/e2e8f0/64748b?text=Photo+indisponible';">
+        </div>
+        <div class="flex flex-col justify-between text-4xs">
+            <div>
+                <span class="font-bold uppercase text-emerald-600 tracking-wider">${p.brand}</span>
+                <h2 class="text-xs font-bold text-slate-900 mt-0.5 mb-1">${p.name}</h2>
+                <div class="text-xs font-bold text-slate-900 mb-1.5">${price} €</div>
+                <p class="text-slate-400 mb-2 leading-relaxed">${p.desc}</p>
+                <ul class="space-y-0.5">${list}</ul>
+            </div>
+            <button onclick="addToCart(${p.id}); closeProductModal(); toggleCart(true);" class="w-full py-1.5 mt-3 bg-emerald-600 text-white font-bold rounded-lg uppercase tracking-wider cursor-pointer">
+                Sélectionner
+            </button>
+        </div>
+    `;
+    document.getElementById('product-modal').classList.remove('hidden');
+}
+
+function closeProductModal() {
+    document.getElementById('product-modal').classList.add('hidden');
+}
+
+function toggleCart(open) {
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-overlay');
+    if (open) {
+        drawer.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+        renderCart();
+    } else {
+        drawer.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+    }
+}
+
+function triggerNotification(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = "bg-slate-900 text-white border border-slate-800 px-3 py-2 rounded-xl text-3xs font-semibold shadow-xl flex items-center gap-2 pointer-events-auto transition-all duration-300 translate-y-2 opacity-0";
+    toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i><span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+    setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-1');
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
+
+function addToCart(id) {
+    const p = products.find(prod => prod.id === id);
+    const exist = cart.find(i => i.product.id === id);
+    if (exist) exist.quantity++;
+    else cart.push({ product: p, quantity: 1 });
+    updateCartBadge();
+    triggerNotification(`${p.name} ajouté !`);
+}
+
+function updateCartBadge() {
+    const totalCount = cart.reduce((acc, i) => acc + i.quantity, 0);
+    document.getElementById('cart-count').textContent = totalCount;
+    document.getElementById('floating-cart-count').textContent = totalCount;
+}
+
+function changeQuantity(id, amt) {
+    const item = cart.find(i => i.product.id === id);
+    if (!item) return;
+    item.quantity += amt;
+    if (item.quantity <= 0) cart = cart.filter(i => i.product.id !== id);
+    updateCartBadge();
+    renderCart();
+    if (!document.getElementById('page-checkout').classList.contains('hidden')) {
+        renderCheckoutSummary();
+        const method = document.querySelector('input[name="payment_method"]:checked');
+        if (method && method.value === 'crypto') updateCryptoDetails();
+    }
+}
+
+function renderCart() {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+    let subtotal = 0;
+    if (cart.length === 0) {
+        container.innerHTML = `<p class="text-center py-4 text-slate-400 text-4xs uppercase tracking-wide">Panier vide.</p>`;
+        document.getElementById('cart-subtotal').textContent = "0.00 €";
+        return;
+    }
+    cart.forEach(i => {
+        const price = i.product.promoPrice || i.product.price;
+        subtotal += price * i.quantity;
+        container.innerHTML += `
+            <div class="flex items-center justify-between gap-2 py-1.5 text-4xs border-b border-slate-50">
+                <div class="truncate max-w-[140px]">
+                    <h4 class="font-bold text-slate-900 truncate">${i.product.name}</h4>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button onclick="changeQuantity(${i.product.id}, -1)" class="w-3.5 h-3.5 bg-slate-100 rounded-sm font-bold text-center">-</button>
+                    <span class="font-bold">${i.quantity}</span>
+                    <button onclick="changeQuantity(${i.product.id}, 1)" class="w-3.5 h-3.5 bg-slate-100 rounded-sm font-bold text-center">+</button>
+                    <span class="font-bold text-slate-900 ml-1">${(price * i.quantity).toFixed(2)} €</span>
+                </div>
+            </div>
+        `;
+    });
+    document.getElementById('cart-subtotal').textContent = subtotal.toFixed(2) + " €";
+}
+
+function navigateToCheckout() {
+    if (cart.length === 0) return;
+    toggleCart(false);
+    navigateTo('checkout');
+    renderCheckoutSummary();
+}
+
+function renderCheckoutSummary() {
+    const container = document.getElementById('checkout-summary-items');
+    container.innerHTML = '';
+    let total = 0;
+    cart.forEach(i => {
+        const price = i.product.promoPrice || i.product.price;
+        total += price * i.quantity;
+        container.innerHTML += `
+            <div class="flex justify-between py-1 text-4xs text-slate-500">
+                <span class="truncate max-w-[200px]">${i.product.name} x${i.quantity}</span>
+                <span class="font-bold text-slate-900">${(price * i.quantity).toFixed(2)} €</span>
+            </div>
+        `;
+    });
+    document.getElementById('checkout-subtotal').textContent = total.toFixed(2) + " €";
+    document.getElementById('checkout-total').textContent = total.toFixed(2) + " €";
+}
+
+function processOrderAndInvoice(e) {
+    e.preventDefault();
+
+    const client = {
+        name: document.getElementById('form-name').value,
+        phone: document.getElementById('form-phone').value,
+        address: document.getElementById('form-address').value,
+        city: document.getElementById('form-city').value,
+        zip: document.getElementById('form-zip').value,
+        country: document.getElementById('form-country').value,
+    };
+
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    const isCrypto = paymentMethod === 'crypto';
+    const cryptoType = document.getElementById('crypto-select').value;
+    const cryptoAmt = document.getElementById('crypto-amount').textContent;
+    const cryptoHash = document.getElementById('form-crypto-hash').value;
+
+    const subtotal = cart.reduce((acc, i) => acc + (i.product.promoPrice || i.product.price) * i.quantity, 0);
+    const date = new Date().toLocaleDateString('fr-FR');
+    const invoiceNumber = "TLC-" + Math.floor(Math.random() * 900000 + 100000);
+
+    // CORRECTIF : on n'affirme plus "PAYÉ" automatiquement.
+    // Le paiement (carte/virement/crypto) n'est jamais vérifié réellement par ce site
+    // sans backend : afficher "PAYÉ" ici induirait le client en erreur.
+    // On indique un statut honnête, à confirmer manuellement par vous.
+    const statutReel = "EN ATTENTE DE CONFIRMATION MANUELLE";
+
+    let invoice = "";
+    invoice += "==================================================\n";
+    invoice += "        RÉCAPITULATIF DE COMMANDE - TOUT LA CLIME\n";
+    invoice += "==================================================\n\n";
+    invoice += `Numéro : ${invoiceNumber}\n`;
+    invoice += `Date : ${date}\n`;
+    invoice += `Statut : ${statutReel}\n\n`;
+    invoice += "CLIENT :\n";
+    invoice += `Nom : ${client.name}\n`;
+    invoice += `Téléphone : ${client.phone}\n`;
+    invoice += `Adresse : ${client.address}, ${client.zip} ${client.city}, ${client.country}\n\n`;
+    invoice += "ARTICLES :\n";
+    invoice += "--------------------------------------------------\n";
+    cart.forEach(i => {
+        const price = i.product.promoPrice || i.product.price;
+        invoice += `- ${i.product.name} x${i.quantity} : ${(price * i.quantity).toFixed(2)} €\n`;
+    });
+    invoice += "--------------------------------------------------\n";
+    invoice += `TOTAL : ${subtotal.toFixed(2)} €\n\n`;
+
+    if (isCrypto) {
+        invoice += "MODE DE PAIEMENT : CRYPTO (à vérifier manuellement)\n";
+        invoice += `Crypto : ${cryptoType}\n`;
+        invoice += `Montant attendu : ${cryptoAmt}\n`;
+        invoice += `Hash transaction fourni par le client : ${cryptoHash || "Non renseigné"}\n`;
+    } else {
+        invoice += "MODE DE PAIEMENT : CARTE / VIREMENT (à confirmer manuellement)\n";
+    }
+
+    invoice += "\n==================================================";
+    generatedInvoiceData = invoice;
+
+    // Adapter le texte de la modale selon le mode de paiement
+    const title = document.getElementById('invoice-title');
+    const subtext = document.getElementById('invoice-subtext');
+    if (isCrypto) {
+        title.textContent = "Commande enregistrée !";
+        subtext.textContent = "Nous vérifions la transaction sur la blockchain. Vous recevrez une confirmation par email dès validation.";
+    } else {
+        title.textContent = "Commande enregistrée !";
+        subtext.textContent = "Un conseiller va vous contacter pour finaliser le paiement.";
+    }
+
+    const btn = document.getElementById('download-invoice-btn');
+    btn.onclick = () => {
+        const blob = new Blob([generatedInvoiceData], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Commande_${invoiceNumber}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    document.getElementById('invoice-modal').classList.remove('hidden');
+}
+
+function closeInvoiceModalAndReset() {
+    document.getElementById('invoice-modal').classList.add('hidden');
+    cart = [];
+    updateCartBadge();
+    document.getElementById('checkout-form').reset();
+    document.getElementById('crypto-payment-area').classList.add('hidden');
+    navigateTo('accueil');
+}
+
+window.onload = () => {
+    renderGrids();
+};
+    </script>
+
+</body>
+</html>
