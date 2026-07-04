@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tout la Clime | Confort Thermique Éco</title>
+    <title>Climareon | Confort Thermique Éco</title>
     <!-- Tailwind CSS pour un rendu professionnel -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- CORRECTIF : déclaration des tailles personnalisées text-2xs/3xs/4xs/5xs et shadow-3xs -->
@@ -130,7 +130,7 @@
                     <i class="fa-solid fa-wind text-xs"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-xs font-bold tracking-wider text-slate-900 uppercase">Tout La Clime</span>
+                    <span class="text-xs font-bold tracking-wider text-slate-900 uppercase">Climareon</span>
                     <span class="text-5xs font-semibold tracking-widest text-slate-400 uppercase -mt-0.5">France & EU</span>
                 </div>
             </a>
@@ -344,10 +344,63 @@
                             <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Code Postal *</label>
                             <input type="text" required id="form-zip" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
                         </div>
-                        <div>
-                            <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Pays *</label>
-                            <input type="text" required id="form-country" value="France" class="w-full p-2 border border-slate-200 rounded-lg text-xs">
-                        </div>
+                  <div>
+    <label class="block text-4xs font-bold uppercase text-slate-400 mb-0.5">Pays *</label>
+    <select id="form-country" onchange="onCountryChange()" class="w-full p-2 border border-slate-200 rounded-lg text-xs bg-white">
+        <option value="" disabled selected>Sélectionnez votre pays</option>
+        <option value="Albanie">Albanie</option>
+        <option value="Allemagne">Allemagne</option>
+        <option value="Andorre">Andorre</option>
+        <option value="Autriche">Autriche</option>
+        <option value="Belgique">Belgique</option>
+        <option value="Biélorussie">Biélorussie</option>
+        <option value="Bosnie-Herzégovine">Bosnie-Herzégovine</option>
+        <option value="Bulgarie">Bulgarie</option>
+        <option value="Chypre">Chypre</option>
+        <option value="Croatie">Croatie</option>
+        <option value="Danemark">Danemark</option>
+        <option value="Espagne">Espagne</option>
+        <option value="Estonie">Estonie</option>
+        <option value="Finlande">Finlande</option>
+        <option value="France">France</option>
+        <option value="Grèce">Grèce</option>
+        <option value="Hongrie">Hongrie</option>
+        <option value="Irlande">Irlande</option>
+        <option value="Islande">Islande</option>
+        <option value="Italie">Italie</option>
+        <option value="Lettonie">Lettonie</option>
+        <option value="Liechtenstein">Liechtenstein</option>
+        <option value="Lituanie">Lituanie</option>
+        <option value="Luxembourg">Luxembourg</option>
+        <option value="Macédoine du Nord">Macédoine du Nord</option>
+        <option value="Malte">Malte</option>
+        <option value="Moldavie">Moldavie</option>
+        <option value="Monaco">Monaco</option>
+        <option value="Monténégro">Monténégro</option>
+        <option value="Norvège">Norvège</option>
+        <option value="Pays-Bas">Pays-Bas</option>
+        <option value="Pologne">Pologne</option>
+        <option value="Portugal">Portugal</option>
+        <option value="République tchèque">République tchèque</option>
+        <option value="Roumanie">Roumanie</option>
+        <option value="Royaume-Uni">Royaume-Uni</option>
+        <option value="Russie">Russie</option>
+        <option value="Saint-Marin">Saint-Marin</option>
+        <option value="Serbie">Serbie</option>
+        <option value="Slovaquie">Slovaquie</option>
+        <option value="Slovénie">Slovénie</option>
+        <option value="Suède">Suède</option>
+        <option value="Suisse">Suisse</option>
+        <option value="Turquie">Turquie</option>
+        <option value="Ukraine">Ukraine</option>
+        <option value="Vatican">Vatican</option>
+        <option value="Autre">Autre (Hors Europe)</option>
+    </select>
+</div>
+                        
+                        
+                        
+                        
                     </div>
 
                     <div class="pt-2">
@@ -361,6 +414,38 @@
                                 <input type="radio" name="payment_method" value="crypto" onchange="togglePaymentType('crypto')">
                                 <span class="text-3xs font-bold uppercase text-amber-600 flex items-center gap-1"><i class="fa-brands fa-bitcoin text-2xs"></i> Crypto-monnaies</span>
                             </label>
+                        </div>
+                    </div>
+
+                    <div id="bank-payment-area" class="border border-emerald-200 bg-emerald-50/40 p-3 rounded-xl space-y-3">
+                        <p class="text-4xs font-bold uppercase text-emerald-800">Virement bancaire (SEPA)</p>
+                        <p class="text-5xs text-emerald-700 leading-relaxed">Effectuez votre virement vers le compte ci-dessous. Votre commande sera confirmée manuellement dès réception du paiement.</p>
+                        <div class="bg-white p-2.5 rounded-lg border border-emerald-100 space-y-2 text-4xs">
+                            <div class="flex justify-between items-center gap-2">
+                                <div class="min-w-0">
+                                    <span class="text-slate-400 uppercase font-semibold block">Nom du bénéficiaire</span>
+                                    <span id="bank-nom" class="font-mono font-bold text-slate-800 text-3xs select-all">LAURENA DOSSANTOS PEREIRA</span>
+                                </div>
+                                <button type="button" onclick="copyText('LAURENA DOSSANTOS PEREIRA', this)" class="shrink-0 px-2 py-1 bg-slate-950 hover:bg-emerald-600 text-white rounded-md text-4xs font-bold uppercase cursor-pointer flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copier</button>
+                            </div>
+                            <div class="flex justify-between items-center gap-2 border-t border-emerald-50 pt-2">
+                                <div class="min-w-0">
+                                    <span class="text-slate-400 uppercase font-semibold block">RIB / IBAN</span>
+                                    <span id="bank-rib" class="font-mono font-bold text-slate-800 text-3xs select-all break-all">FR7617238000010042921011975</span>
+                                </div>
+                                <button type="button" onclick="copyText('FR7617238000010042921011975', this)" class="shrink-0 px-2 py-1 bg-slate-950 hover:bg-emerald-600 text-white rounded-md text-4xs font-bold uppercase cursor-pointer flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copier</button>
+                            </div>
+                            <div class="flex justify-between items-center gap-2 border-t border-emerald-50 pt-2">
+                                <div class="min-w-0">
+                                    <span class="text-slate-400 uppercase font-semibold block">BIC</span>
+                                    <span id="bank-bic" class="font-mono font-bold text-slate-800 text-3xs select-all">SCSYFRP2</span>
+                                </div>
+                                <button type="button" onclick="copyText('SCSYFRP2', this)" class="shrink-0 px-2 py-1 bg-slate-950 hover:bg-emerald-600 text-white rounded-md text-4xs font-bold uppercase cursor-pointer flex items-center gap-1"><i class="fa-regular fa-copy"></i> Copier</button>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-emerald-50">
+                                <span class="text-slate-400 uppercase font-semibold">Montant à virer :</span>
+                                <span id="bank-amount" class="text-xs font-black text-slate-900 bg-emerald-100 px-2 py-0.5 rounded">0.00 €</span>
+                            </div>
                         </div>
                     </div>
 
@@ -403,7 +488,7 @@
                         <div id="checkout-summary-items" class="divide-y divide-slate-100 max-h-48 overflow-y-auto"></div>
                         <div class="mt-3 pt-3 border-t border-slate-100 text-4xs uppercase tracking-wide font-semibold space-y-1">
                             <div class="flex justify-between text-slate-400"><span>Sous-total</span><span id="checkout-subtotal" class="font-bold text-slate-700">0.00 €</span></div>
-                            <div class="flex justify-between text-slate-400"><span>Envoi logistique</span><span class="text-emerald-600 font-bold">Gratuit</span></div>
+                            <div class="flex justify-between text-slate-400"><span>Envoi logistique</span><span id="checkout-shipping" class="text-emerald-600 font-bold">Gratuit (Europe)</span></div>
                             <div class="flex justify-between text-xs font-bold text-slate-900 pt-2 border-t border-slate-100"><span>Total TTC</span><span id="checkout-total">0.00 €</span></div>
                         </div>
                     </div>
@@ -434,15 +519,65 @@
         </div>
 
         <!-- MODAL FACTURE -->
-        <div id="invoice-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
-            <div class="bg-white rounded-xl max-w-sm w-full p-5 text-center shadow-2xl">
+        <div id="invoice-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs overflow-y-auto">
+            <div class="bg-white rounded-xl max-w-sm w-full p-5 text-center shadow-2xl my-6">
                 <div id="invoice-icon-wrap" class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-lg">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
                 <h3 id="invoice-title" class="text-sm font-bold text-slate-900 mb-1">Commande enregistrée !</h3>
                 <p id="invoice-subtext" class="text-slate-400 text-3xs mb-4">Votre commande a bien été enregistrée. Vous pouvez télécharger votre récapitulatif.</p>
+
+
+<div class="bg-white rounded-lg border border-slate-200 p-3 my-4 shadow-sm">
+    <!-- Bénéficiaire -->
+    <div class="flex items-center justify-between text-xs py-2">
+        <span class="font-bold text-slate-500 w-16">Nom</span>
+        <span id="copy-nom" class="flex-grow font-semibold text-slate-800 px-2 truncate">LAURENA DOSSANTOS PEREIRA</span>
+        <button onclick="copier('copy-nom', this)" class="bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded font-bold transition-all duration-300">Copier</button>
+    </div>
+
+    <!-- RIB -->
+    <div class="flex items-center justify-between text-xs py-2 border-t border-slate-50">
+        <span class="font-bold text-slate-500 w-16">RIB</span>
+        <span id="copy-rib" class="flex-grow font-mono font-bold text-emerald-700 px-2 truncate">FR7617238000010042921011975</span>
+        <button onclick="copier('copy-rib', this)" class="bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded font-bold transition-all duration-300">Copier</button>
+    </div>
+
+    <!-- BIC -->
+    <div class="flex items-center justify-between text-xs py-2 border-t border-slate-50">
+        <span class="font-bold text-slate-500 w-16">BIC</span>
+        <span id="copy-bic" class="flex-grow font-mono font-bold text-slate-800 px-2 truncate">SCSYFRP2</span>
+        <button onclick="copier('copy-bic', this)" class="bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded font-bold transition-all duration-300">Copier</button>
+    </div>
+</div>
+
+
+
+                <div id="proof-of-payment-area" class="text-left border border-slate-200 rounded-xl p-3 mb-4 space-y-2.5 bg-slate-50">
+                    <p class="text-4xs font-bold uppercase tracking-widest text-slate-700 flex items-center gap-1.5"><i class="fa-solid fa-receipt text-emerald-600"></i> Envoyer votre preuve de paiement</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-5xs font-bold uppercase text-slate-400 mb-0.5">Nom *</label>
+                            <input type="text" id="proof-lastname" class="w-full p-1.5 border border-slate-200 rounded-lg text-3xs">
+                        </div>
+                        <div>
+                            <label class="block text-5xs font-bold uppercase text-slate-400 mb-0.5">Prénom *</label>
+                            <input type="text" id="proof-firstname" class="w-full p-1.5 border border-slate-200 rounded-lg text-3xs">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-5xs font-bold uppercase text-slate-400 mb-0.5">Photo / Capture d'écran du paiement *</label>
+                        <input type="file" id="proof-file" accept="image/*" onchange="previewProofFile(event)" class="w-full text-3xs file:mr-2 file:py-1.5 file:px-2 file:rounded-lg file:border-0 file:bg-slate-900 file:text-white file:text-4xs file:font-bold file:uppercase file:cursor-pointer cursor-pointer">
+                        <img id="proof-preview" class="hidden mt-2 max-h-28 rounded-lg border border-slate-200 mx-auto">
+                    </div>
+                    <p class="text-5xs text-slate-400 leading-relaxed">Votre client mail va s'ouvrir avec toutes les informations pré-remplies. Comme les navigateurs ne permettent pas de joindre un fichier automatiquement, il vous suffira de glisser la photo sélectionnée ci-dessus dans le mail avant de l'envoyer.</p>
+                    <button type="button" onclick="sendProofOfPayment()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-4xs uppercase tracking-widest cursor-pointer flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Envoyer la preuve de paiement
+                    </button>
+                </div>
+
                 <div class="space-y-2">
-                    <button id="download-invoice-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-4xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer">
+                    <button id="download-invoice-btn" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg text-4xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-file-arrow-down"></i> Télécharger le récapitulatif
                     </button>
                     <button onclick="closeInvoiceModalAndReset()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-4xs uppercase tracking-wider cursor-pointer">
@@ -460,9 +595,18 @@
         </section>
 
         <section id="page-contact" class="page-section hidden max-w-xl mx-auto px-4 py-6 bg-white border border-slate-200 rounded-xl my-4 text-center">
-            <h1 class="text-sm font-bold text-slate-900 mb-2">Support technique & logistique</h1>
-            <p class="text-slate-500 text-xs">Réponse sous 24h : <b class="text-emerald-600">Climareon@outlook.fr</b></p>
-        </section>
+    <h1 class="text-sm font-bold text-slate-900 mb-2">Support technique & logistique</h1>
+    <div class="space-y-1">
+        <p class="text-slate-500 text-xs">
+            Réponse sous 24h : <b class="text-emerald-600">Climareon@outlook.fr</b>
+        </p>
+        <p class="text-slate-500 text-xs">
+            WhatsApp / Téléphone : 
+            <a href="tel:+33757750303" class="text-emerald-600 font-bold hover:underline">+33 7 57 75 03 03</a>
+        </p>
+    </div>
+</section>
+
 
     </main>
 
@@ -472,7 +616,7 @@
 
             <div class="mb-8 bg-emerald-950/40 border border-emerald-900/60 rounded-xl p-3.5 text-center">
                 <p class="text-3xs font-bold uppercase tracking-widest text-emerald-400 flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-bolt text-amber-400"></i> Offre exclusive : Livraison gratuite partout en Europe et en France métropolitaine ce mois-ci !
+                    <i class="fa-solid fa-bolt text-amber-400"></i> Offre exclusive : Livraison gratuite en Europe. Hors Europe, livraison à partir de 20 $.
                 </p>
             </div>
 
@@ -519,20 +663,26 @@
                     <ul class="space-y-2 font-medium text-slate-400">
                         <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600 text-5xs"></i> Garantie 2 ans constructeur incluse</li>
                         <li class="flex items-center gap-1.5"><i class="fa-solid fa-arrow-rotate-left text-slate-600 text-5xs"></i> Retours sous 14 jours d'usine</li>
-                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-truck text-emerald-600 text-5xs"></i> Livraison Gratuite (FR & Europe)</li>
-                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-envelope-open text-slate-600 text-5xs"></i> Suivi par courriel sous 24h</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-truck text-emerald-600 text-5xs"></i> Livraison Gratuite en Europe</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-globe text-slate-600 text-5xs"></i> Hors Europe : dès 20 $</li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="font-black text-slate-200 tracking-widest text-3xs mb-3 pb-1 border-b border-slate-900">Support Client</h3>
-                    <ul class="space-y-2 font-medium text-slate-400">
-                        <li class="flex items-center gap-1.5 text-emerald-400"><i class="fa-brands fa-whatsapp text-xs"></i> Assistance 7j/7 via WhatsApp</li>
-                        <li class="lowercase text-slate-400 font-bold select-all tracking-normal">Email : Climareon@outlook.fr</li>
-                        <li class="text-slate-500 font-bold">Délai moyen : Moins de 2h</li>
-                        <li class="text-slate-500">Traitement des litiges directs d'usine</li>
-                    </ul>
-                </div>
+    <h3 class="font-black text-slate-200 tracking-widest text-3xs mb-3 pb-1 border-b border-slate-900">Support Client</h3>
+    <ul class="space-y-2 font-medium text-slate-400">
+        <!-- Ajout du numéro cliquable -->
+        <li class="flex items-center gap-1.5 text-emerald-400">
+            <i class="fa-brands fa-whatsapp text-xs"></i> 
+            <a href="tel:+33757750303" class="hover:underline">+33 7 57 75 03 03</a>
+        </li>
+        <li class="text-emerald-400 text-2xs">Assistance 7j/7 via WhatsApp</li>
+        <li class="lowercase text-slate-400 font-bold select-all tracking-normal">Email : Climareon@outlook.fr</li>
+        <li class="text-slate-500 font-bold">Délai moyen : Moins de 2h</li>
+        <li class="text-slate-500">Traitement des litiges directs d'usine</li>
+    </ul>
+</div>
+
 
                 <div>
                     <h3 class="font-black text-slate-200 tracking-widest text-3xs mb-3 pb-1 border-b border-slate-900">Paiement</h3>
@@ -549,7 +699,7 @@
 
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-5xs uppercase tracking-widest text-slate-600 text-center md:text-left">
                 <div class="flex flex-col gap-0.5">
-                    <span class="font-bold text-slate-500">Tout la Clime © 2026</span>
+                    <span class="font-bold text-slate-500">Climareon © 2026</span>
                     <span class="normal-case tracking-normal max-w-xl text-slate-600">Boutique de déstockage. Les dénominations commerciales et photos d'illustration sont la propriété exclusive de leurs marques respectives.</span>
                 </div>
                 <div class="shrink-0 text-slate-500 font-bold">
@@ -563,25 +713,35 @@
     <!-- LOGIQUE JAVASCRIPT -->
     <script>
 const products = [
-    { id: 1, name: "Climatiseur Mobile Éco Compact 2.0kW", brand: "Tout la Clime Eco", power: "2.0kW", price: 249, promoPrice: 199, category: "clim", image: "images1.jpg", desc: "Climatiseur portatif idéal pour petites pièces jusqu'à 20m².", specs: ["Classe: A", "7000 BTU", "Fluide: R290 Éco"] },
+    { id: 1, name: "Climatiseur Mobile Éco Compact 2.0kW", brand: "Climareon Eco", power: "2.0kW", price: 249, promoPrice: 199, category: "clim", image: "images1.jpg", desc: "Climatiseur portatif idéal pour petites pièces jusqu'à 20m².", specs: ["Classe: A", "7000 BTU", "Fluide: R290 Éco"] },
     { id: 2, name: "Daikin Sensira Split Mural Performant", brand: "Daikin", power: "2.5kW", price: 649, promoPrice: 579, category: "clim", image: "images2.jpg", desc: "Moteur Inverter ultra-économique.", specs: ["Classe: A++", "21 dB", "Inverter: Oui"] },
     { id: 3, name: "Mitsubishi Electric Design Compact", brand: "Mitsubishi", power: "3.5kW", price: 899, promoPrice: 799, category: "clim", image: "images3.jpg", desc: "Finition blanche mate de type premium.", specs: ["Classe: A+++", "Purificateur intégré"] },
     { id: 4, name: "Climatiseur Mobile Premium Silent Pro", brand: "Carrier", power: "2.6kW", price: 349, promoPrice: 299, category: "clim", image: "images4.jpg", desc: "Solution mobile robuste avec kit inclus.", specs: ["Classe: A+", "Télécommande"] },
     { id: 5, name: "Système Split Fixe Air-Concept Éco", brand: "Panasonic", power: "2.5kW", price: 450, promoPrice: 389, category: "clim", image: "images5.jpg", desc: "Climatiseur fixe réversible (chaud/froid).", specs: ["Classe: A++", "Gaz: R32"] },
     { id: 6, name: "Climatiseur Fenêtre US-Style Intégrable", brand: "Carrier", power: "3.2kW", price: 499, promoPrice: null, category: "clim", image: "images6.jpg", desc: "S'intègre dans une ouverture de cloison.", specs: ["Classe: A", "Châssis robuste"] },
     { id: 7, name: "Console Basse Double Flux Confort", brand: "Daikin", power: "3.5kW", price: 1199, promoPrice: 999, category: "clim", image: "images7.jpg", desc: "Se pose au sol ou en bas de mur.", specs: ["Classe: A++", "Double Flux"] },
-    { id: 8, name: "Climatiseur Mobile Grand Espace 4.1kW", brand: "Tout la Clime Heavy", power: "4.1kW", price: 549, promoPrice: 479, category: "clim", image: "images8.jpg", desc: "Idéal pour grands volumes jusqu'à 50m².", specs: ["3 vitesses", "Débit max: 450 m³/h"] },
+    { id: 8, name: "Climatiseur Mobile Grand Espace 4.1kW", brand: "Climareon Heavy", power: "4.1kW", price: 549, promoPrice: 479, category: "clim", image: "images8.jpg", desc: "Idéal pour grands volumes jusqu'à 50m².", specs: ["3 vitesses", "Débit max: 450 m³/h"] },
     { id: 9, name: "Monobloc Mural Sans Groupe Externe", brand: "Panasonic", power: "2.3kW", price: 929, promoPrice: null, category: "clim", image: "images9.jpg", desc: "Idéal pour les façades classées.", specs: ["Pas d'unité externe", "Design slim"] },
     { id: 10, name: "Split Mural Panasonic Inverter Élite", brand: "Panasonic", power: "5.0kW", price: 1450, promoPrice: 1290, category: "clim", image: "images10.jpg", desc: "Une puissance hors norme.", specs: ["Classe: A++", "WiFi intégré"] },
     { id: 11, name: "Ventilateur colonne sans pales Premium", brand: "Air-Confort", power: "60W", price: 169, promoPrice: 149, category: "canicule", image: "images11.jpg", desc: "Flux d'air continu et mode nuit silencieux.", specs: ["35 dB", "Oscillation 90°"] },
     { id: 12, name: "Rafraîchisseur d'air évaporatif Mobile", brand: "HydroAir", power: "80W", price: 119, promoPrice: 89, category: "canicule", image: "images12.jpg", desc: "Rafraîchit et humidifie avec efficacité.", specs: ["Réservoir: 6L", "Glace incluse"] },
     { id: 13, name: "Rideaux occultants & thermiques Protection", brand: "ThermoShield", power: "Isolant", price: 49, promoPrice: 39, category: "canicule", image: "images13.jpg", desc: "Baisse de 3-5°C sans électricité.", specs: ["140x260cm", "Aluminisé"] },
     { id: 14, name: "Ventilateur de plafond avec minuterie", brand: "AeroSleep", power: "45W", price: 159, promoPrice: 129, category: "canicule", image: "images14.jpg", desc: "Mode nuit silencieux optimal.", specs: ["6 vitesses", "Éclairage LED"] },
-    { id: 15, name: "Ventilateur brumisateur portable USB", brand: "PocketBreeze", power: "Batterie", price: 25, promoPrice: 19, category: "canicule", image: "images15.jpg", desc: "Achat d'impulsion idéal.", specs: ["Autonomie: 6h", "Recharge USB-C"] }
+    { id: 15, name: "Ventilateur brumisateur portable USB", brand: "PocketBreeze", power: "Batterie", price: 25, promoPrice: 19, category: "canicule", image: "images15.jpg", desc: "Achat d'impulsion idéal.", specs: ["Autonomie: 6h", "Recharge USB-C"] },
+    { id: 16, name: "Climatiseur Mobile Elsay 12 000 BTU", brand: "Elsay", power: "3.6kW", price: 249, promoPrice: 224.10, category: "clim", image: "images16.jpg", desc: "Climatiseur mobile réversible pour pièces de 25 à 35 m².", specs: ["Classe: A", "Débit: 400 m³/h", "Déshum: 19L/j", "Gaz: R290"] },
+    { id: 17, name: "Climatiseur Mobile Beko BS207C", brand: "Beko", power: "3.5kW", price: 149.99, promoPrice: 124.99, category: "clim", image: "images17.jpg", desc: "Refroidissement, ventilation et déshumidification.", specs: ["Classe: A", "Minuteur 24h", "Surface: 30-35 m²", "Gaz: R290"] },
+    { id: 18, name: "Climatiseur Mobile Vedette V12KR2H", brand: "Vedette", power: "3.5kW", price: 249.99, promoPrice: 214.99, category: "clim", image: "images18.jpg", desc: "Climatiseur mobile réversible froid & chaud.", specs: ["Classe: A", "Réversible", "Programmation 24h", "Gaz: R290"] },
+    { id: 19, name: "De'Longhi Pinguino PAC EL112 Wi-Fi", brand: "De'Longhi", power: "3.5kW", price: 799, promoPrice: 639.20, category: "clim", image: "images19.jpg", desc: "Haut de gamme, Cool Surround et Wi-Fi.", specs: ["Classe: A+", "Sonore: 47-50 dB", "Connectivité Wi-Fi", "Gaz: R290"] },
+    { id: 20, name: "Midea PortaSplit Inverter", brand: "Midea", power: "3.5kW", price: 1299, promoPrice: 1039.20, category: "clim", image: "images20.jpg", desc: "Split mobile nouvelle génération, très haute efficacité.", specs: ["Inverter DC", "Sonore: 39-42 dB", "Connectivité Wi-Fi", "Gaz: R32"] }
 ];
 
 let cart = [];
 let generatedInvoiceData = null;
+let currentOrderClient = null;
+let currentOrderNumber = null;
+let currentOrderTotal = 0;
+let currentPaymentMethod = "standard";
+let proofFileName = null;
 
 const cryptoAddresses = {
     TRON: "TMockAddressTRC20NetworkUSDTxxxxxx", // Remplace par ta vraie adresse TRON
@@ -599,6 +759,69 @@ const cryptoRates = {
     TRON: 1
 };
 
+// Liste des pays considérés comme "Europe" pour la livraison gratuite (comparaison insensible à la casse/accents)
+const europeCountries = [
+    "france", "allemagne", "italie", "espagne", "portugal", "belgique", "pays-bas", "pays bas",
+    "luxembourg", "autriche", "irlande", "grece", "grèce", "finlande", "suede", "suède",
+    "danemark", "pologne", "republique tcheque", "république tchèque", "tchequie", "tchéquie",
+    "slovaquie", "hongrie", "roumanie", "bulgarie", "croatie", "slovenie", "slovénie",
+    "lituanie", "lettonie", "estonie", "chypre", "malte", "suisse", "norvege", "norvège",
+    "royaume-uni", "royaume uni", "islande", "monaco", "andorre", "liechtenstein", "uk", "united kingdom"
+];
+
+function normalizeStr(str) {
+    return (str || "").toString().trim().toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function isEuropeCountry(countryStr) {
+    const n = normalizeStr(countryStr);
+    if (!n) return true; // par défaut (champ vide) on considère Europe
+    return europeCountries.some(c => normalizeStr(c) === n);
+}
+
+function getShippingFeeEUR(countryStr) {
+    return isEuropeCountry(countryStr) ? 0 : 20; // 20 $ hors Europe (affiché tel quel)
+}
+
+function onCountryChange() {
+    if (!document.getElementById('page-checkout').classList.contains('hidden')) {
+        renderCheckoutSummary();
+        const method = document.querySelector('input[name="payment_method"]:checked');
+        if (method && method.value === 'crypto') updateCryptoDetails();
+        else updateBankAmount();
+    }
+}
+
+function copyText(value, btnEl) {
+    const doCopyFeedback = () => {
+        if (btnEl) {
+            const original = btnEl.innerHTML;
+            btnEl.innerHTML = '<i class="fa-solid fa-check"></i> Copié';
+            setTimeout(() => { btnEl.innerHTML = original; }, 1500);
+        }
+        triggerNotification("Copié dans le presse-papiers !");
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(doCopyFeedback).catch(() => fallbackCopy(value, doCopyFeedback));
+    } else {
+        fallbackCopy(value, doCopyFeedback);
+    }
+}
+
+function fallbackCopy(value, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = value;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    if (cb) cb();
+}
+
 function navigateTo(pageId, filterOpt = 'all') {
     document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
     document.getElementById(`page-${pageId}`).classList.remove('hidden');
@@ -607,6 +830,9 @@ function navigateTo(pageId, filterOpt = 'all') {
     if (pageId === 'catalogue') {
         document.getElementById('catalogue-filter').value = filterOpt;
         applyCatalogueFilter();
+    }
+    if (pageId === 'checkout') {
+        renderCheckoutSummary();
     }
 }
 
@@ -629,9 +855,9 @@ function sendNouveauteMail(e) {
     const phone = document.getElementById('nov-phone').value || "Non spécifié";
     const details = document.getElementById('nov-details').value;
     const recipient = "Climareon@outlook.fr";
-    const subject = encodeURIComponent("Demande de Nouveauté / Matériel Spécifique - Tout La Clime");
+    const subject = encodeURIComponent("Demande de Nouveauté / Matériel Spécifique - Climareon");
     const body = encodeURIComponent(
-        "Bonjour l'équipe Tout La Clime,\n\n" +
+        "Bonjour l'équipe Climareon,\n\n" +
         "Nom : " + name + "\n" +
         "Email : " + email + "\n" +
         "Téléphone : " + phone + "\n\n" +
@@ -644,23 +870,40 @@ function sendNouveauteMail(e) {
 }
 
 function togglePaymentType(type) {
+    currentPaymentMethod = type;
     const cryptoBox = document.getElementById('crypto-payment-area');
+    const bankBox = document.getElementById('bank-payment-area');
     const hashInput = document.getElementById('form-crypto-hash');
     if (type === "crypto") {
         cryptoBox.classList.remove("hidden");
+        bankBox.classList.add("hidden");
         hashInput.setAttribute("required", "true");
         updateCryptoDetails();
     } else {
         cryptoBox.classList.add("hidden");
+        bankBox.classList.remove("hidden");
         hashInput.removeAttribute("required");
+        updateBankAmount();
     }
 }
 
-function updateCryptoDetails() {
-    const totalEUR = cart.reduce(
+function getCartTotalEUR() {
+    const subtotal = cart.reduce(
         (acc, item) => acc + (item.product.promoPrice || item.product.price) * item.quantity,
         0
     );
+    const shipping = getShippingFeeEUR(document.getElementById('form-country') ? document.getElementById('form-country').value : "France");
+    return { subtotal, shipping, total: subtotal + shipping };
+}
+
+function updateBankAmount() {
+    const { total } = getCartTotalEUR();
+    const el = document.getElementById('bank-amount');
+    if (el) el.textContent = total.toFixed(2) + " €";
+}
+
+function updateCryptoDetails() {
+    const { total: totalEUR } = getCartTotalEUR();
     const crypto = document.getElementById("crypto-select").value;
     let amount = "";
     switch (crypto) {
@@ -819,6 +1062,7 @@ function changeQuantity(id, amt) {
         renderCheckoutSummary();
         const method = document.querySelector('input[name="payment_method"]:checked');
         if (method && method.value === 'crypto') updateCryptoDetails();
+        else updateBankAmount();
     }
 }
 
@@ -861,10 +1105,8 @@ function navigateToCheckout() {
 function renderCheckoutSummary() {
     const container = document.getElementById('checkout-summary-items');
     container.innerHTML = '';
-    let total = 0;
     cart.forEach(i => {
         const price = i.product.promoPrice || i.product.price;
-        total += price * i.quantity;
         container.innerHTML += `
             <div class="flex justify-between py-1 text-4xs text-slate-500">
                 <span class="truncate max-w-[200px]">${i.product.name} x${i.quantity}</span>
@@ -872,8 +1114,67 @@ function renderCheckoutSummary() {
             </div>
         `;
     });
-    document.getElementById('checkout-subtotal').textContent = total.toFixed(2) + " €";
+    const countryEl = document.getElementById('form-country');
+    const { subtotal, shipping, total } = getCartTotalEUR();
+    document.getElementById('checkout-subtotal').textContent = subtotal.toFixed(2) + " €";
+    const shippingEl = document.getElementById('checkout-shipping');
+    if (shipping === 0) {
+        shippingEl.textContent = "Gratuit (Europe)";
+        shippingEl.className = "text-emerald-600 font-bold";
+    } else {
+        shippingEl.textContent = shipping.toFixed(2) + " $ (Hors Europe)";
+        shippingEl.className = "text-amber-600 font-bold";
+    }
     document.getElementById('checkout-total').textContent = total.toFixed(2) + " €";
+    updateBankAmount();
+}
+
+function previewProofFile(e) {
+    const file = e.target.files && e.target.files[0];
+    const img = document.getElementById('proof-preview');
+    if (!file) {
+        proofFileName = null;
+        img.classList.add('hidden');
+        return;
+    }
+    proofFileName = file.name;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        img.src = ev.target.result;
+        img.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+}
+
+function sendProofOfPayment() {
+    const lastname = document.getElementById('proof-lastname').value.trim();
+    const firstname = document.getElementById('proof-firstname').value.trim();
+    if (!lastname || !firstname) {
+        triggerNotification("Merci de renseigner votre nom et prénom.");
+        return;
+    }
+    if (!proofFileName) {
+        triggerNotification("Merci de sélectionner une photo ou capture d'écran.");
+        return;
+    }
+
+    const recipient = "Climareon@outlook.fr";
+    const subject = encodeURIComponent(`Preuve de paiement - Commande ${currentOrderNumber || ""}`);
+    let body = "Bonjour l'équipe Climareon,\n\n";
+    body += `Voici ma preuve de paiement pour la commande ${currentOrderNumber || ""}.\n\n`;
+    body += `Nom : ${lastname}\n`;
+    body += `Prénom : ${firstname}\n`;
+    if (currentOrderClient) {
+        body += `Téléphone : ${currentOrderClient.phone}\n`;
+        body += `Adresse : ${currentOrderClient.address}, ${currentOrderClient.zip} ${currentOrderClient.city}, ${currentOrderClient.country}\n`;
+    }
+    body += `Méthode de paiement : ${currentPaymentMethod === 'crypto' ? 'Crypto-monnaie' : 'Virement bancaire'}\n`;
+    body += `Montant : ${currentOrderTotal.toFixed(2)} €\n\n`;
+    body += `Fichier joint : ${proofFileName} (veuillez joindre ce fichier manuellement à cet email avant l'envoi, cela n'est pas automatique).\n\n`;
+    body += "Merci.";
+
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(body)}`;
+    triggerNotification("Ouverture de votre client mail : n'oubliez pas de joindre la photo avant d'envoyer !");
 }
 
 function processOrderAndInvoice(e) {
@@ -889,24 +1190,27 @@ function processOrderAndInvoice(e) {
     };
 
     const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    currentPaymentMethod = paymentMethod;
     const isCrypto = paymentMethod === 'crypto';
     const cryptoType = document.getElementById('crypto-select').value;
     const cryptoAmt = document.getElementById('crypto-amount').textContent;
     const cryptoHash = document.getElementById('form-crypto-hash').value;
 
-    const subtotal = cart.reduce((acc, i) => acc + (i.product.promoPrice || i.product.price) * i.quantity, 0);
+    const { subtotal, shipping, total } = getCartTotalEUR();
     const date = new Date().toLocaleDateString('fr-FR');
-    const invoiceNumber = "TLC-" + Math.floor(Math.random() * 900000 + 100000);
+    const invoiceNumber = "CLR-" + Math.floor(Math.random() * 900000 + 100000);
 
-    // CORRECTIF : on n'affirme plus "PAYÉ" automatiquement.
-    // Le paiement (carte/virement/crypto) n'est jamais vérifié réellement par ce site
-    // sans backend : afficher "PAYÉ" ici induirait le client en erreur.
-    // On indique un statut honnête, à confirmer manuellement par vous.
+    currentOrderClient = client;
+    currentOrderNumber = invoiceNumber;
+    currentOrderTotal = total;
+
+    // On n'affirme jamais "PAYÉ" automatiquement : le paiement (virement/crypto)
+    // n'est jamais vérifié réellement par ce site sans backend.
     const statutReel = "EN ATTENTE DE CONFIRMATION MANUELLE";
 
     let invoice = "";
     invoice += "==================================================\n";
-    invoice += "        RÉCAPITULATIF DE COMMANDE - TOUT LA CLIME\n";
+    invoice += "        RÉCAPITULATIF DE COMMANDE - CLIMAREON\n";
     invoice += "==================================================\n\n";
     invoice += `Numéro : ${invoiceNumber}\n`;
     invoice += `Date : ${date}\n`;
@@ -922,7 +1226,11 @@ function processOrderAndInvoice(e) {
         invoice += `- ${i.product.name} x${i.quantity} : ${(price * i.quantity).toFixed(2)} €\n`;
     });
     invoice += "--------------------------------------------------\n";
-    invoice += `TOTAL : ${subtotal.toFixed(2)} €\n\n`;
+    invoice += `Sous-total : ${subtotal.toFixed(2)} €\n`;
+    invoice += shipping === 0
+        ? `Livraison : Gratuite (Europe)\n`
+        : `Livraison : ${shipping.toFixed(2)} $ (Hors Europe)\n`;
+    invoice += `TOTAL : ${total.toFixed(2)} €\n\n`;
 
     if (isCrypto) {
         invoice += "MODE DE PAIEMENT : CRYPTO (à vérifier manuellement)\n";
@@ -930,7 +1238,10 @@ function processOrderAndInvoice(e) {
         invoice += `Montant attendu : ${cryptoAmt}\n`;
         invoice += `Hash transaction fourni par le client : ${cryptoHash || "Non renseigné"}\n`;
     } else {
-        invoice += "MODE DE PAIEMENT : CARTE / VIREMENT (à confirmer manuellement)\n";
+        invoice += "MODE DE PAIEMENT : VIREMENT BANCAIRE (à confirmer manuellement)\n";
+        invoice += "Bénéficiaire : LAURENA DOSSANTOS PEREIRA\n";
+        invoice += "RIB/IBAN : FR7617238000010042921011975\n";
+        invoice += "BIC : SCSYFRP2\n";
     }
 
     invoice += "\n==================================================";
@@ -944,8 +1255,18 @@ function processOrderAndInvoice(e) {
         subtext.textContent = "Nous vérifions la transaction sur la blockchain. Vous recevrez une confirmation par email dès validation.";
     } else {
         title.textContent = "Commande enregistrée !";
-        subtext.textContent = "Un conseiller va vous contacter pour finaliser le paiement.";
+        subtext.textContent = "Merci d'effectuer votre virement puis d'envoyer votre preuve de paiement ci-dessous.";
     }
+    
+    
+    
+
+    // Réinitialiser le bloc preuve de paiement
+    document.getElementById('proof-lastname').value = "";
+    document.getElementById('proof-firstname').value = "";
+    document.getElementById('proof-file').value = "";
+    document.getElementById('proof-preview').classList.add('hidden');
+    proofFileName = null;
 
     const btn = document.getElementById('download-invoice-btn');
     btn.onclick = () => {
@@ -969,6 +1290,7 @@ function closeInvoiceModalAndReset() {
     updateCartBadge();
     document.getElementById('checkout-form').reset();
     document.getElementById('crypto-payment-area').classList.add('hidden');
+    document.getElementById('bank-payment-area').classList.remove('hidden');
     navigateTo('accueil');
 }
 
@@ -1057,6 +1379,29 @@ window.onload = () => {
     updateDots();
     startCarousel();
 };
+function copier(idElement, btn) {
+    // 1. Copie le texte
+    const texte = document.getElementById(idElement).innerText;
+    
+    navigator.clipboard.writeText(texte).then(() => {
+        // 2. Sauvegarde l'état d'origine du bouton
+        const originalText = btn.innerText;
+        const originalClass = btn.className;
+
+        // 3. Applique le feedback visuel (devient vert)
+        btn.innerText = "Copié !";
+        btn.classList.remove("bg-slate-100", "hover:bg-slate-200");
+        btn.classList.add("bg-emerald-500", "text-white");
+
+        // 4. Revient à la normale après 2 secondes
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.className = originalClass; // Remet les styles d'origine
+        }, 2000);
+    }).catch(err => {
+        console.error('Erreur de copie', err);
+    });
+}
 
 
     </script>
