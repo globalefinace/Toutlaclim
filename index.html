@@ -248,12 +248,207 @@
                 
             </div>
 
-            <!-- GRILLE DE PRODUITS -->
-            <div class="max-w-7xl mx-auto px-4 py-6">
-                <div class="flex items-center justify-end mb-3">
-                    <button onclick="navigateTo('catalogue')" class="text-4xs font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer">Voir tout le stock <i class="fa-solid fa-arrow-right text-4xs"></i></button>
+            <!-- SECTIONS DE PRODUITS PAR CATEGORIE (3 produits par section) -->
+            <div class="max-w-7xl mx-auto px-4 py-6 space-y-8">
+
+                <!-- SECTION 1 : CLIMATISEURS VEDETTES -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-snowflake text-emerald-600"></i> Climatiseurs Vedettes
+                        </h2>
+                        <button onclick="navigateTo('catalogue', 'clim')" class="text-4xs font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer">Voir tout <i class="fa-solid fa-arrow-right text-4xs"></i></button>
+                    </div>
+                    <div id="home-grid-clim" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div class="flex justify-center mt-4">
+                        <button onclick="navigateTo('catalogue', 'clim')" class="px-4 py-2 bg-white border border-slate-200 hover:border-emerald-300 hover:text-emerald-600 text-slate-600 font-bold rounded-lg text-4xs uppercase tracking-widest transition cursor-pointer flex items-center gap-1.5 shadow-3xs">Voir plus <i class="fa-solid fa-chevron-down text-4xs"></i></button>
+                    </div>
                 </div>
-                <div id="homepage-featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+
+                <!-- SECTION 2 : ANTI-CANICULE -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-fan text-emerald-600"></i> Solutions Anti-Canicule
+                        </h2>
+                        <button onclick="navigateTo('catalogue', 'canicule')" class="text-4xs font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer">Voir tout <i class="fa-solid fa-arrow-right text-4xs"></i></button>
+                    </div>
+                    <div id="home-grid-canicule" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div class="flex justify-center mt-4">
+                        <button onclick="navigateTo('catalogue', 'canicule')" class="px-4 py-2 bg-white border border-slate-200 hover:border-emerald-300 hover:text-emerald-600 text-slate-600 font-bold rounded-lg text-4xs uppercase tracking-widest transition cursor-pointer flex items-center gap-1.5 shadow-3xs">Voir plus <i class="fa-solid fa-chevron-down text-4xs"></i></button>
+                    </div>
+                </div>
+
+                <!-- SECTION 3 : MEILLEURES PROMOS -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-red-500"></i> Meilleures Promos
+                        </h2>
+                        <button onclick="navigateTo('catalogue', 'promo')" class="text-4xs font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer">Voir tout <i class="fa-solid fa-arrow-right text-4xs"></i></button>
+                    </div>
+                    <div id="home-grid-promo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div class="flex justify-center mt-4">
+                        <button onclick="navigateTo('catalogue', 'promo')" class="px-4 py-2 bg-white border border-slate-200 hover:border-emerald-300 hover:text-emerald-600 text-slate-600 font-bold rounded-lg text-4xs uppercase tracking-widest transition cursor-pointer flex items-center gap-1.5 shadow-3xs">Voir plus <i class="fa-solid fa-chevron-down text-4xs"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SECTION AVIS CLIENTS (DÉFILEMENT) -->
+            <div class="bg-white border-y border-slate-100 py-8 mt-4">
+                <div class="max-w-7xl mx-auto px-4 mb-5">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-star text-amber-400"></i> Ce que disent nos clients
+                    </h2>
+                    <p class="text-4xs text-slate-400 mt-1">Plus de 4 200 avis vérifiés depuis notre ouverture.</p>
+                </div>
+                <div class="overflow-hidden">
+                    <div class="animate-marquee-cards">
+                        <div class="flex gap-4 px-4">
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Livraison rapide et climatiseur qui tourne parfaitement depuis 3 mois. Rien à dire, très satisfait de l'achat.</p>
+                                <p class="text-4xs font-bold text-slate-900">Julien M. <span class="font-normal text-slate-400">— Lyon</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Le service client répond vraiment vite sur WhatsApp. J'avais une question sur l'installation, réglée en 20 minutes.</p>
+                                <p class="text-4xs font-bold text-slate-900">Sarah D. <span class="font-normal text-slate-400">— Marseille</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Bon rapport qualité prix pour le modèle mobile éco. Un peu bruyant en vitesse max mais franchement correct.</p>
+                                <p class="text-4xs font-bold text-slate-900">Thomas R. <span class="font-normal text-slate-400">— Toulouse</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Le Daikin Sensira tourne en continu depuis l'été dernier, silencieux et efficace même en pleine canicule.</p>
+                                <p class="text-4xs font-bold text-slate-900">Camille B. <span class="font-normal text-slate-400">— Nantes</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Commande passée par virement, un peu d'appréhension au début mais la confirmation est arrivée le jour même.</p>
+                                <p class="text-4xs font-bold text-slate-900">Nicolas F. <span class="font-normal text-slate-400">— Bordeaux</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Très bon rafraîchisseur d'air pour la chambre des enfants, silencieux la nuit et facile à remplir.</p>
+                                <p class="text-4xs font-bold text-slate-900">Aïcha K. <span class="font-normal text-slate-400">— Lille</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Prix vraiment plus bas que dans le commerce pour un matériel identique. Le direct usine change tout.</p>
+                                <p class="text-4xs font-bold text-slate-900">Marc L. <span class="font-normal text-slate-400">— Strasbourg</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Ventilateur colonne premium impeccable, oscillation fluide et vraiment silencieux même en mode nuit.</p>
+                                <p class="text-4xs font-bold text-slate-900">Élodie P. <span class="font-normal text-slate-400">— Nice</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Le split Panasonic Inverter Élite est un peu cher mais la puissance et le WiFi intégré valent le coup.</p>
+                                <p class="text-4xs font-bold text-slate-900">Kevin S. <span class="font-normal text-slate-400">— Rennes</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Installation simple, notice claire en français, et le fluide écologique R32 me rassure niveau environnement.</p>
+                                <p class="text-4xs font-bold text-slate-900">Laura V. <span class="font-normal text-slate-400">— Montpellier</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Deuxième commande chez Climareon, toujours aussi fiable. Le suivi de colis était précis à un jour près.</p>
+                                <p class="text-4xs font-bold text-slate-900">Antoine G. <span class="font-normal text-slate-400">— Reims</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Les rideaux thermiques font vraiment baisser la température de la pièce, simple à poser en plus.</p>
+                                <p class="text-4xs font-bold text-slate-900">Nadia H. <span class="font-normal text-slate-400">— Dijon</span></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 px-4" aria-hidden="true">
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Livraison rapide et climatiseur qui tourne parfaitement depuis 3 mois. Rien à dire, très satisfait de l'achat.</p>
+                                <p class="text-4xs font-bold text-slate-900">Julien M. <span class="font-normal text-slate-400">— Lyon</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Le service client répond vraiment vite sur WhatsApp. J'avais une question sur l'installation, réglée en 20 minutes.</p>
+                                <p class="text-4xs font-bold text-slate-900">Sarah D. <span class="font-normal text-slate-400">— Marseille</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Bon rapport qualité prix pour le modèle mobile éco. Un peu bruyant en vitesse max mais franchement correct.</p>
+                                <p class="text-4xs font-bold text-slate-900">Thomas R. <span class="font-normal text-slate-400">— Toulouse</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Le Daikin Sensira tourne en continu depuis l'été dernier, silencieux et efficace même en pleine canicule.</p>
+                                <p class="text-4xs font-bold text-slate-900">Camille B. <span class="font-normal text-slate-400">— Nantes</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Commande passée par virement, un peu d'appréhension au début mais la confirmation est arrivée le jour même.</p>
+                                <p class="text-4xs font-bold text-slate-900">Nicolas F. <span class="font-normal text-slate-400">— Bordeaux</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Très bon rafraîchisseur d'air pour la chambre des enfants, silencieux la nuit et facile à remplir.</p>
+                                <p class="text-4xs font-bold text-slate-900">Aïcha K. <span class="font-normal text-slate-400">— Lille</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Prix vraiment plus bas que dans le commerce pour un matériel identique. Le direct usine change tout.</p>
+                                <p class="text-4xs font-bold text-slate-900">Marc L. <span class="font-normal text-slate-400">— Strasbourg</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Ventilateur colonne premium impeccable, oscillation fluide et vraiment silencieux même en mode nuit.</p>
+                                <p class="text-4xs font-bold text-slate-900">Élodie P. <span class="font-normal text-slate-400">— Nice</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Le split Panasonic Inverter Élite est un peu cher mais la puissance et le WiFi intégré valent le coup.</p>
+                                <p class="text-4xs font-bold text-slate-900">Kevin S. <span class="font-normal text-slate-400">— Rennes</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Installation simple, notice claire en français, et le fluide écologique R32 me rassure niveau environnement.</p>
+                                <p class="text-4xs font-bold text-slate-900">Laura V. <span class="font-normal text-slate-400">— Montpellier</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★★</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Deuxième commande chez Climareon, toujours aussi fiable. Le suivi de colis était précis à un jour près.</p>
+                                <p class="text-4xs font-bold text-slate-900">Antoine G. <span class="font-normal text-slate-400">— Reims</span></p>
+                            </div>
+                            <div class="w-64 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                                <div class="flex text-amber-400 text-4xs mb-1.5">★★★★☆</div>
+                                <p class="text-4xs text-slate-600 leading-relaxed mb-2">Les rideaux thermiques font vraiment baisser la température de la pièce, simple à poser en plus.</p>
+                                <p class="text-4xs font-bold text-slate-900">Nadia H. <span class="font-normal text-slate-400">— Dijon</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC TEXTE EXPLICATIF / SEO -->
+            <div class="max-w-7xl mx-auto px-4 py-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-4xs leading-relaxed text-slate-500">
+                    <div>
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 mb-2">Pourquoi choisir Climareon pour votre climatiseur ?</h2>
+                        <p class="mb-2">Climareon est né d'un constat simple : le prix d'un climatiseur en magasin est souvent gonflé par une longue chaîne d'intermédiaires — grossistes, distributeurs régionaux, revendeurs locaux — qui prennent chacun leur marge avant que l'appareil n'arrive chez vous. En travaillant en lien direct avec les lignes de production et les stocks d'usine, nous supprimons une grande partie de ces coûts et reversons l'économie directement sur nos prix affichés.</p>
+                        <p class="mb-2">Concrètement, cela veut dire que vous pouvez retrouver un climatiseur mobile ou un split mural de marque reconnue (Daikin, Panasonic, Mitsubishi, De'Longhi, Midea) à un tarif souvent inférieur à celui pratiqué en grande surface, sans compromis sur la qualité, la garantie constructeur ou le service après-vente. Chaque référence de notre catalogue est sélectionnée pour son rapport performance/prix et sa fiabilité sur la durée.</p>
+                        <p>Nos arrivages fonctionnent par vagues : dès qu'un lot arrive en dépôt, il est mis en ligne avec son prix d'usine. C'est aussi pour cette raison que certains modèles disparaissent temporairement du catalogue et que d'autres apparaissent en promotion — c'est le stock physique qui dicte la disponibilité, pas une stratégie marketing artificielle.</p>
+                    </div>
+                    <div>
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-slate-900 mb-2">Comment bien choisir la puissance de son climatiseur ?</h2>
+                        <p class="mb-2">La puissance frigorifique, exprimée en kW ou en BTU, doit être adaptée à la surface et à la hauteur sous plafond de la pièce à climatiser. En règle générale, on compte environ 100 W par m² pour une pièce standard bien isolée, un peu plus si la pièce est très exposée au soleil, mal isolée, ou si plusieurs appareils électroniques y dégagent de la chaleur en continu.</p>
+                        <p class="mb-2">Un climatiseur sous-dimensionné tournera en permanence à pleine puissance sans jamais atteindre la température souhaitée, ce qui use prématurément le compresseur et fait grimper la facture d'électricité. À l'inverse, un modèle surdimensionné aura tendance à se couper trop souvent, ce qui nuit à la déshumidification de la pièce et au confort ressenti. Nos fiches produit indiquent la surface conseillée pour chaque référence afin de vous aider à faire le bon choix.</p>
+                        <p>Pensez également au niveau sonore (en dB), particulièrement important pour une chambre, ainsi qu'au type de fluide frigorigène utilisé : les fluides R32 et R290, que l'on retrouve sur la majorité de nos modèles récents, ont un impact environnemental nettement réduit par rapport aux anciennes générations de gaz réfrigérants.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -917,10 +1112,38 @@ function updateCryptoDetails() {
     document.getElementById("crypto-address").textContent = cryptoAddresses[crypto];
 }
 
+function effectivePrice(p) {
+    return p.promoPrice !== null && p.promoPrice !== undefined ? p.promoPrice : p.price;
+}
+
 function renderGrids() {
-    const homeGrid = document.getElementById('homepage-featured-grid');
-    homeGrid.innerHTML = '';
-    renderToContainer([products[0], products[10], products[11], products[12]], homeGrid);
+    // Section 1 : Climatiseurs vedettes (5 produits, prix le plus bas en premier)
+    const gridClim = document.getElementById('home-grid-clim');
+    gridClim.innerHTML = '';
+    const climPicks = products
+        .filter(p => p.category === 'clim')
+        .sort((a, b) => effectivePrice(a) - effectivePrice(b))
+        .slice(0, 5);
+    renderToContainer(climPicks, gridClim);
+
+    // Section 2 : Anti-canicule (3 produits, prix le plus bas en premier)
+    const gridCanicule = document.getElementById('home-grid-canicule');
+    gridCanicule.innerHTML = '';
+    const caniculePicks = products
+        .filter(p => p.category === 'canicule')
+        .sort((a, b) => effectivePrice(a) - effectivePrice(b))
+        .slice(0, 3);
+    renderToContainer(caniculePicks, gridCanicule);
+
+    // Section 3 : Meilleures promos (3 produits, prix le plus bas en premier)
+    const gridPromo = document.getElementById('home-grid-promo');
+    gridPromo.innerHTML = '';
+    const promoPicks = products
+        .filter(p => p.promoPrice !== null)
+        .sort((a, b) => effectivePrice(a) - effectivePrice(b))
+        .slice(0, 3);
+    renderToContainer(promoPicks, gridPromo);
+
     applyCatalogueFilter();
 }
 
@@ -972,6 +1195,7 @@ function applyCatalogueFilter() {
     if (val === 'clim') filtered = products.filter(p => p.category === 'clim');
     if (val === 'canicule') filtered = products.filter(p => p.category === 'canicule');
     if (val === 'promo') filtered = products.filter(p => p.promoPrice !== null);
+    filtered = [...filtered].sort((a, b) => effectivePrice(a) - effectivePrice(b));
     renderToContainer(filtered, container);
 }
 
@@ -1306,105 +1530,3 @@ const dotsContainer = document.getElementById("dots");
 function createDots() {
     for (let i = 1; i <= total; i++) {
         const dot = document.createElement("div");
-        dot.classList.add("dot");
-        dot.onclick = () => goToSlide(i);
-        dotsContainer.appendChild(dot);
-    }
-}
-
-// update dots
-function updateDots() {
-    document.querySelectorAll(".dot").forEach((d, i) => {
-        d.classList.toggle("active", i + 1 === current);
-    });
-}
-
-// changer image
-function showImage() {
-    img.style.opacity = 0;
-
-    setTimeout(() => {
-        img.src = `images${current}.jpg`;
-        img.style.opacity = 1;
-        updateDots();
-    }, 200);
-}
-
-// next
-function nextSlide() {
-    current++;
-    if (current > total) current = 1;
-    showImage();
-}
-
-// prev
-function prevSlide() {
-    current--;
-    if (current < 1) current = total;
-    showImage();
-}
-
-// aller à une image
-function goToSlide(i) {
-    current = i;
-    showImage();
-}
-
-// autoplay
-function startCarousel() {
-    timer = setInterval(nextSlide, 3500);
-}
-
-function pauseCarousel() {
-    clearInterval(timer);
-}
-
-// swipe mobile
-let startX = 0;
-
-document.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchend", e => {
-    let endX = e.changedTouches[0].clientX;
-
-    if (startX - endX > 50) nextSlide();
-    if (endX - startX > 50) prevSlide();
-});
-
-window.onload = () => {
-    renderGrids();
-    createDots();
-    updateDots();
-    startCarousel();
-};
-function copier(idElement, btn) {
-    // 1. Copie le texte
-    const texte = document.getElementById(idElement).innerText;
-    
-    navigator.clipboard.writeText(texte).then(() => {
-        // 2. Sauvegarde l'état d'origine du bouton
-        const originalText = btn.innerText;
-        const originalClass = btn.className;
-
-        // 3. Applique le feedback visuel (devient vert)
-        btn.innerText = "Copié !";
-        btn.classList.remove("bg-slate-100", "hover:bg-slate-200");
-        btn.classList.add("bg-emerald-500", "text-white");
-
-        // 4. Revient à la normale après 2 secondes
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.className = originalClass; // Remet les styles d'origine
-        }, 2000);
-    }).catch(err => {
-        console.error('Erreur de copie', err);
-    });
-}
-
-
-    </script>
-
-</body>
-</html>
