@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de Colis | Plateforme de Traçage</title>
+    <style>
+        /* CSS : Design et mise en page */
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin-top: 50px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin-top: 0; }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        input {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #resultat {
+            margin-top: 30px;
+            display: none; /* Caché par défaut */
+            border-top: 2px solid var(--bg-color);
+            padding-top: 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 999px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>Logistique Express</h2>
+    </header>
+
+    <div class="container">
+        <h1>Suivre mon colis</h1>
+        <p>Entrez votre numéro de suivi ci-dessous :</p>
+        
+        <div class="search-box">
+            <input type="text" id="trackInput" placeholder="Ex: AX123456789FR">
+            <button onclick="suivreColis()">Rechercher</button>
+        </div>
+
+        <div id="resultat">
+            <h3>Détails du colis : <span id="displayId"></span></h3>
+            <p>Statut : <span class="status-badge">En transit</span></p>
+            <p>Dernière position : <strong>Centre de tri, Paris</strong></p>
+            <p>Date estimée de livraison : <strong>10 Juillet 2026</strong></p>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript : Logique simple
+        function suivreColis() {
+            const input = document.getElementById('trackInput').value;
+            const resultat = document.getElementById('resultat');
+            const displayId = document.getElementById('displayId');
+
+            if (input.length > 0) {
+                displayId.innerText = input;
+                resultat.style.display = 'block';
+            } else {
+                alert("Veuillez entrer un numéro de suivi valide.");
+            }
+        }
+    </script>
+</body>
+</html>
